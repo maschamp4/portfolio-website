@@ -1,0 +1,280 @@
+/* ==========================================================================
+   Design System Variables
+   All design tokens from DESIGN_SYSTEM.md
+   ========================================================================== */
+
+/* ==========================================================================
+   Custom Font Faces
+   Add your custom font files to public/fonts/ directory
+   See public/fonts/README.md for detailed instructions
+   ========================================================================== */
+
+/* View Black - Display/Heading Font */
+@font-face {
+  font-family: 'View';
+  src: url('/fonts/View-Black-Roman-FTP.ttf') format('truetype');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Fatal Trial - Bold Body Font */
+@font-face {
+  font-family: 'Fatal Trial';
+  src: url('/fonts/fatal-trial-bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  /* ==========================================================================
+     Color System
+     ========================================================================== */
+  
+  /* Grayscale */
+  --color-black: #000000;
+  --color-gray-950: #0a0a0a;
+  --color-gray-900: #171717;
+  --color-gray-800: #262626;
+  --color-gray-700: #404040;
+  --color-gray-600: #525252;
+  --color-gray-500: #737373;
+  --color-gray-400: #a3a3a3;
+  --color-gray-300: #d4d4d4;
+  --color-gray-200: #e5e5e5;
+  --color-gray-100: #f5f5f5;
+  --color-white: #ffffff;
+  
+  /* Accent Colors */
+  --color-accent-blue: #3b82f6;
+  --color-accent-cyan: #06b6d4;
+  --color-accent-purple: #8b5cf6;
+  
+  /* Semantic Colors */
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-error: #ef4444;
+  --color-info: #3b82f6;
+  
+  /* Background */
+  --color-bg-primary: var(--color-black);
+  --color-bg-secondary: var(--color-gray-950);
+  --color-bg-tertiary: var(--color-gray-900);
+  
+  /* Text */
+  --color-text-primary: var(--color-white);
+  --color-text-secondary: var(--color-gray-300);
+  --color-text-tertiary: var(--color-gray-500);
+  --color-text-inverse: var(--color-black);
+  
+  /* Borders */
+  --color-border-subtle: rgba(255, 255, 255, 0.1);
+  --color-border-default: rgba(255, 255, 255, 0.2);
+  --color-border-strong: rgba(255, 255, 255, 0.3);
+  
+  /* Glass Morphism */
+  --glass-bg: rgba(255, 255, 255, 0.05);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  --glass-blur: 10px;
+  --glass-hover-bg: rgba(255, 255, 255, 0.08);
+  --glass-hover-border: rgba(255, 255, 255, 0.15);
+  
+  /* Gradients */
+  --gradient-primary: linear-gradient(135deg, var(--color-accent-blue) 0%, var(--color-accent-purple) 100%);
+  --gradient-secondary: linear-gradient(135deg, var(--color-accent-cyan) 0%, var(--color-accent-blue) 100%);
+  --gradient-dark: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.8) 100%);
+  --gradient-light: linear-gradient(180deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 100%);
+  
+  /* ==========================================================================
+     Typography System
+     ========================================================================== */
+  
+  /* Font Families */
+  --font-primary: 'Fatal Trial', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-display: 'View', 'Fatal Trial', system-ui, sans-serif;
+  --font-system: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: 'Courier New', monospace;
+  
+  /* Font Weights */
+  --font-weight-light: 300;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  
+  /* Desktop Type Scale (Major Third - 1.250) */
+  --text-xs: 0.64rem;      /* 10.24px */
+  --text-sm: 0.8rem;       /* 12.8px */
+  --text-base: 1rem;       /* 16px */
+  --text-lg: 1.25rem;      /* 20px */
+  --text-xl: 1.563rem;     /* 25px */
+  --text-2xl: 1.953rem;    /* 31.25px */
+  --text-3xl: 2.441rem;    /* 39px */
+  --text-4xl: 3.052rem;    /* 48.83px */
+  --text-5xl: 3.815rem;    /* 61.04px */
+  --text-6xl: 4.768rem;    /* 76.29px */
+  --text-7xl: 5.96rem;     /* 95.37px */
+  
+  /* Mobile Type Scale (Reduced) */
+  --text-xs-mobile: 0.7rem;    /* 11.2px */
+  --text-sm-mobile: 0.875rem;  /* 14px */
+  --text-base-mobile: 1rem;    /* 16px */
+  --text-lg-mobile: 1.125rem;  /* 18px */
+  --text-xl-mobile: 1.25rem;   /* 20px */
+  --text-2xl-mobile: 1.5rem;   /* 24px */
+  --text-3xl-mobile: 1.875rem; /* 30px */
+  --text-4xl-mobile: 2.25rem;  /* 36px */
+  --text-5xl-mobile: 2.5rem;   /* 40px */
+  
+  /* ==========================================================================
+     Spacing System (8px base)
+     ========================================================================== */
+  
+  --space-0: 0;
+  --space-1: 0.25rem;    /* 4px */
+  --space-2: 0.5rem;     /* 8px */
+  --space-3: 0.75rem;    /* 12px */
+  --space-4: 1rem;       /* 16px */
+  --space-5: 1.25rem;    /* 20px */
+  --space-6: 1.5rem;     /* 24px */
+  --space-8: 2rem;       /* 32px */
+  --space-10: 2.5rem;    /* 40px */
+  --space-12: 3rem;      /* 48px */
+  --space-16: 4rem;      /* 64px */
+  --space-20: 5rem;      /* 80px */
+  --space-24: 6rem;      /* 96px */
+  --space-32: 8rem;      /* 128px */
+  --space-40: 10rem;     /* 160px */
+  --space-48: 12rem;     /* 192px */
+  --space-56: 14rem;     /* 224px */
+  --space-64: 16rem;     /* 256px */
+  
+  /* ==========================================================================
+     Breakpoints
+     ========================================================================== */
+  
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1536px;
+  
+  /* ==========================================================================
+     Z-Index Scale
+     ========================================================================== */
+  
+  --z-base: 0;
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-fixed: 300;
+  --z-modal-backdrop: 400;
+  --z-modal: 500;
+  --z-popover: 600;
+  --z-tooltip: 700;
+  --z-notification: 800;
+  --z-three-canvas: -1;
+  
+  /* ==========================================================================
+     Shadow System
+     ========================================================================== */
+  
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.3);
+  --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.3);
+  --shadow-2xl: 0 25px 50px rgba(0, 0, 0, 0.4);
+  
+  /* Glow Effects */
+  --shadow-glow-sm: 0 0 10px rgba(255, 255, 255, 0.1);
+  --shadow-glow-md: 0 0 20px rgba(255, 255, 255, 0.15);
+  --shadow-glow-lg: 0 0 40px rgba(255, 255, 255, 0.2);
+  
+  /* ==========================================================================
+     Border Radius
+     ========================================================================== */
+  
+  --radius-none: 0;
+  --radius-sm: 0.25rem;    /* 4px */
+  --radius-md: 0.5rem;     /* 8px */
+  --radius-lg: 1rem;       /* 16px */
+  --radius-xl: 1.5rem;     /* 24px */
+  --radius-full: 9999px;
+  
+  /* ==========================================================================
+     Animation & Motion
+     ========================================================================== */
+  
+  /* Easing Functions */
+  --ease-in-quad: cubic-bezier(0.55, 0.085, 0.68, 0.53);
+  --ease-out-quad: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --ease-in-out-quad: cubic-bezier(0.455, 0.03, 0.515, 0.955);
+  --ease-in-cubic: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+  --ease-out-cubic: cubic-bezier(0.215, 0.61, 0.355, 1);
+  --ease-in-out-cubic: cubic-bezier(0.645, 0.045, 0.355, 1);
+  --ease-elastic: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  
+  /* Duration Scale */
+  --duration-instant: 0ms;
+  --duration-fast: 150ms;
+  --duration-normal: 300ms;
+  --duration-slow: 500ms;
+  --duration-slower: 800ms;
+  --duration-slowest: 1200ms;
+  
+  /* ==========================================================================
+     Layout
+     ========================================================================== */
+  
+  --container-narrow: 768px;
+  --container-default: 1200px;
+  --container-wide: 1440px;
+  --container-full: 100%;
+  
+  /* ==========================================================================
+     Miscellaneous
+     ========================================================================== */
+  
+  --blur-sm: 4px;
+  --blur-md: 8px;
+  --blur-lg: 16px;
+  --blur-xl: 24px;
+  
+  --opacity-disabled: 0.5;
+  --opacity-hover: 0.8;
+}
+
+/* ==========================================================================
+   Responsive Variable Adjustments
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  :root {
+    /* Use mobile type scale */
+    --text-xs: var(--text-xs-mobile);
+    --text-sm: var(--text-sm-mobile);
+    --text-base: var(--text-base-mobile);
+    --text-lg: var(--text-lg-mobile);
+    --text-xl: var(--text-xl-mobile);
+    --text-2xl: var(--text-2xl-mobile);
+    --text-3xl: var(--text-3xl-mobile);
+    --text-4xl: var(--text-4xl-mobile);
+    --text-5xl: var(--text-5xl-mobile);
+    --text-6xl: var(--text-5xl-mobile);
+    --text-7xl: var(--text-5xl-mobile);
+  }
+}
+
+/* ==========================================================================
+   High Contrast Mode Support
+   ========================================================================== */
+
+@media (prefers-contrast: high) {
+  :root {
+    --color-border-subtle: rgba(255, 255, 255, 0.3);
+    --color-border-default: rgba(255, 255, 255, 0.5);
+    --color-border-strong: rgba(255, 255, 255, 0.7);
+  }
+}

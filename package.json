@@ -1,0 +1,29 @@
+{
+  "name": "mascha-portfolio",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Portfolio website for Mascha - Artist & Creative Technologist",
+  "author": "Mascha",
+  "license": "MIT",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "three": "^0.160.0",
+    "gsap": "^3.12.0",
+    "lenis": "^1.0.0"
+  },
+  "devDependencies": {
+    "vite": "^5.0.0"
+  },
+  "keywords": [
+    "portfolio",
+    "creative-technology",
+    "three.js",
+    "gsap",
+    "ai-art",
+    "vfx"
+  ]
+}

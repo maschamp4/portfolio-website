@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  
+  <!-- SEO Meta Tags -->
+  <title>Mascha - Visual Artist | Creative Technologist</title>
+  <meta name="description" content="Berlin-based creative technologist specializing in AI-driven visual effects, cinematography, and immersive experiences for film production and live entertainment.">
+  <meta name="keywords" content="AI visual effects, creative technologist, AI cinematography, ComfyUI artist, VFX artist Berlin, generative AI art, real-time visuals">
+  <meta name="author" content="Mascha">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://mascha.art/">
+  <meta property="og:title" content="Mascha - Visual Artist | Creative Technologist">
+  <meta property="og:description" content="Berlin-based creative technologist specializing in AI-driven visual effects, cinematography, and immersive experiences.">
+  <meta property="og:image" content="/images/og-image.jpg">
+  
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://mascha.art/">
+  <meta property="twitter:title" content="Mascha - Visual Artist | Creative Technologist">
+  <meta property="twitter:description" content="Berlin-based creative technologist specializing in AI-driven visual effects and cinematography.">
+  <meta property="twitter:image" content="/images/og-image.jpg">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="/favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+  
+  <!-- Preload Critical Assets -->
+  <link rel="preload" href="/fonts/fatal-trial-bold.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="/fonts/View-Black-Roman-FTP.ttf" as="font" type="font/ttf" crossorigin>
+  
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="/src/styles/reset.css">
+  <link rel="stylesheet" href="/src/styles/variables.css">
+  <link rel="stylesheet" href="/src/styles/global.css">
+</head>
+<body>
+  <!-- Skip to main content link for accessibility -->
+  <a href="#main" class="skip-link">Skip to main content</a>
+  
+  <!-- Three.js Canvas (Background) -->
+  <canvas id="three-canvas" aria-hidden="true"></canvas>
+  
+  <!-- Header / Navigation -->
+  <header id="header" class="header" role="banner">
+    <div class="container">
+      <nav class="nav" role="navigation" aria-label="Main navigation">
+        <button class="nav__toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+          <span class="nav__toggle-icon"></span>
+        </button>
+        
+        <div class="nav__brand">
+          <h1 class="nav__logo">MASCHA</h1>
+          <p class="nav__tagline">Creative Technologist | Visual Artist with a feeling for style and deep expertise in cinematic language</p>
+        </div>
+        
+        <ul class="nav__menu">
+          <li class="nav__item">
+            <a href="#projects" class="nav__link">Projects</a>
+          </li>
+          <li class="nav__item">
+            <a href="#experience" class="nav__link">Experience</a>
+          </li>
+          <li class="nav__item">
+            <a href="#awards" class="nav__link">Awards</a>
+          </li>
+          <li class="nav__item">
+            <a href="#about" class="nav__link">About</a>
+          </li>
+          <li class="nav__item">
+            <a href="#contact" class="nav__link nav__link--cta">Contact</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  
+  <!-- Main Content -->
+  <main id="main" role="main">
+    
+    <!-- Hero Section -->
+    <section id="hero" class="section section--hero" style="min-height: 100vh; display: flex; align-items: center; justify-content: center;">
+      <div class="container">
+        <div class="hero__content">
+          <p class="hero__tagline caption" data-animate="fade-in-up">
+            MASCHA   Creative Technologist | Visual Artist with a feeling for style and deep expertise in cinematic language
+          </p>
+          
+          <h1 class="hero__title display" data-animate="fade-in-up">
+            <span class="hero__title-line">Visual Artist</span>
+            <span class="hero__title-line">Creative Technologist</span>
+          </h1>
+          
+          <p class="hero__subtitle lead" data-animate="fade-in-up">
+            Crafting the Future of Cinematic Storytelling.
+          </p>
+          
+          <div class="hero__cta" data-animate="fade-in-up">
+            <a href="#projects" class="btn btn--primary">View Projects</a>
+            <a href="#contact" class="btn btn--ghost">Get in Touch</a>
+          </div>
+        </div>
+        
+        <div class="hero__scroll-indicator" aria-hidden="true">
+          <span class="scroll-indicator__text caption">Scroll</span>
+          <span class="scroll-indicator__line"></span>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Projects Section -->
+    <section id="projects" class="section section--projects" style="min-height: 100vh; padding: 8rem 0;">
+      <div class="container">
+        <header class="section__header">
+          <span class="section__label caption">Featured Work</span>
+          <h2 class="section__title h2">Selected Works</h2>
+          <p class="section__description body-large">
+            Exploring the intersection of artificial intelligence and cinematic storytelling
+          </p>
+        </header>
+        
+        <div class="projects__grid">
+          <!-- Project cards will be dynamically inserted here -->
+        </div>
+      </div>
+    </section>
+    
+    <!-- Experience Section -->
+    <section id="experience" class="section section--experience" style="min-height: 100vh; padding: 8rem 0;">
+      <div class="container">
+        <header class="section__header">
+          <span class="section__label caption">Background</span>
+          <h2 class="section__title h2">Professional Journey</h2>
+          <p class="section__description body-large">
+            Over 7 years crafting visual experiences at the intersection of art and technology
+          </p>
+        </header>
+        
+        <div class="experience__content">
+          <div class="experience__timeline">
+            <!-- Timeline items will be dynamically inserted here -->
+          </div>
+          
+          <div class="experience__skills">
+            <!-- Skills will be dynamically inserted here -->
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Awards Section -->
+    <section id="awards" class="section section--awards" style="min-height: 100vh; padding: 8rem 0;">
+      <div class="container">
+        <header class="section__header">
+          <span class="section__label caption">Recognition</span>
+          <h2 class="section__title h2">Awards & Recognition</h2>
+          <p class="section__description body-large">
+            Recognition from industry leaders and creative communities worldwide
+          </p>
+        </header>
+        
+        <div class="awards__grid">
+          <!-- Award cards will be dynamically inserted here -->
+        </div>
+      </div>
+    </section>
+    
+    <!-- About Section -->
+    <section id="about" class="section section--about" style="min-height: 100vh; padding: 8rem 0; display: flex; align-items: center;">
+      <div class="container container--narrow">
+        <header class="section__header">
+          <span class="section__label caption">About</span>
+          <h2 class="section__title h2">Who I Am</h2>
+        </header>
+        
+        <div class="about__content">
+          <div class="about__text">
+            <p class="body-large">
+              I am a Berlin-based director and visual artist pioneering the use of artificial intelligence in cinematic narrative.
+            </p>
+            
+            <p class="body">
+              My work merges deep technical R&D with a directorial eye for cinematography and composition, creating visuals that were previously impossible. I collaborate with filmmakers and studios to architect and execute the future of visual expression.
+            </p>
+          </div>
+          
+          <div class="about__image">
+            <img src="/images/profile/mascha-profile.jpg" alt="Mascha portrait" loading="lazy">
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Contact Section -->
+    <section id="contact" class="section section--contact" style="min-height: 100vh; padding: 8rem 0; display: flex; align-items: center;">
+      <div class="container container--narrow">
+        <header class="section__header">
+          <span class="section__label caption">Get in Touch</span>
+          <h2 class="section__title h2">Let's Create Together</h2>
+          <p class="section__description body-large">
+            Available for select projects starting Q2 2025
+          </p>
+        </header>
+        
+        <div class="contact__content">
+          <form class="contact__form" id="contact-form" novalidate>
+            <div class="form-field">
+              <label for="name" class="form-label">Name</label>
+              <input 
+                type="text" 
+                id="name" 
+                name="name" 
+                class="form-input" 
+                required 
+                aria-required="true"
+              >
+              <span class="error-message" role="alert"></span>
+            </div>
+            
+            <div class="form-field">
+              <label for="email" class="form-label">Email</label>
+              <input 
+                type="email" 
+                id="email" 
+                name="email" 
+                class="form-input" 
+                required 
+                aria-required="true"
+              >
+              <span class="error-message" role="alert"></span>
+            </div>
+            
+            <div class="form-field">
+              <label for="project-type" class="form-label">Project Type</label>
+              <select id="project-type" name="project-type" class="form-input">
+                <option value="">Select a project type</option>
+                <option value="feature-film">Feature Film VFX</option>
+                <option value="commercial">High-end Commercial</option>
+                <option value="installation">Art Installation</option>
+                <option value="live-event">Live Event</option>
+                <option value="rd">R&D Collaboration</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            
+            <div class="form-field">
+              <label for="message" class="form-label">Message</label>
+              <textarea 
+                id="message" 
+                name="message" 
+                class="form-textarea" 
+                rows="6" 
+                required 
+                aria-required="true"
+              ></textarea>
+              <span class="error-message" role="alert"></span>
+            </div>
+            
+            <button type="submit" class="btn btn--primary btn--large">
+              Send Message
+            </button>
+          </form>
+          
+          <div class="contact__info">
+            <div class="contact__info-item">
+              <span class="caption">Email</span>
+              <a href="mailto:hello@mascha.art" class="body">hello@mascha.art</a>
+            </div>
+            
+            <div class="contact__info-item">
+              <span class="caption">Location</span>
+              <span class="body">Berlin, Germany (CET/UTC+1)</span>
+            </div>
+            
+            <div class="contact__info-item">
+              <span class="caption">Availability</span>
+              <span class="body">Available for select projects</span>
+            </div>
+            
+            <div class="contact__social">
+              <span class="caption">Connect</span>
+              <div class="social-links">
+                <a href="https://linkedin.com/in/mascha-artist" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                  <span class="sr-only">LinkedIn</span>
+                  <!-- Icon will be added via CSS/JS -->
+                </a>
+                <a href="https://instagram.com/mascha.visuals" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                  <span class="sr-only">Instagram</span>
+                </a>
+                <a href="https://vimeo.com/mascha" target="_blank" rel="noopener noreferrer" aria-label="Vimeo">
+                  <span class="sr-only">Vimeo</span>
+                </a>
+                <a href="https://github.com/mascha-creative" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+                  <span class="sr-only">GitHub</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+  </main>
+  
+  <!-- Footer -->
+  <footer id="footer" class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer__content">
+        <div class="footer__brand">
+          <span class="logo__text h4">MASCHA</span>
+          <p class="body-small">
+            AI Visual Director & Creative Technologist
+          </p>
+        </div>
+        
+        <nav class="footer__nav" aria-label="Footer navigation">
+          <ul class="footer__links">
+            <li><a href="#projects" class="body-small">Projects</a></li>
+            <li><a href="#experience" class="body-small">Experience</a></li>
+            <li><a href="#awards" class="body-small">Awards</a></li>
+            <li><a href="#about" class="body-small">About</a></li>
+            <li><a href="#contact" class="body-small">Contact</a></li>
+          </ul>
+        </nav>
+        
+        <div class="footer__social">
+          <div class="social-links">
+            <a href="https://linkedin.com/in/mascha-artist" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+              <span class="sr-only">LinkedIn</span>
+            </a>
+            <a href="https://instagram.com/mascha.visuals" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+              <span class="sr-only">Instagram</span>
+            </a>
+            <a href="https://vimeo.com/mascha" target="_blank" rel="noopener noreferrer" aria-label="Vimeo">
+              <span class="sr-only">Vimeo</span>
+            </a>
+            <a href="https://github.com/mascha-creative" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+              <span class="sr-only">GitHub</span>
+            </a>
+          </div>
+        </div>
+      </div>
+      
+      <div class="footer__bottom">
+        <p class="body-small">
+          &copy; 2024 Mascha. All rights reserved.
+        </p>
+        <p class="body-small">
+          Crafted with <span aria-label="love">❤️</span> in Berlin
+        </p>
+      </div>
+    </div>
+  </footer>
+  
+  <!-- Main JavaScript Entry Point -->
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
