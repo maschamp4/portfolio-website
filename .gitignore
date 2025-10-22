@@ -50,3 +50,4 @@ coverage/
 public/videos/*.mp4
 public/videos/*.mov
 public/videos/*.avi
+.vercel
