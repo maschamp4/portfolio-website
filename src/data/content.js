@@ -24,7 +24,7 @@ export const projects = [
     role: "Artist",
     shortDescription: "Role: Artist",
     description: "The Challenge: To create a non-repeating, photorealistic animated journey through a synthetic world, maintaining visual coherence and a meditative, dreamlike quality for an immersive installation.\n\nThe Approach: Trained a bespoke generative model on Danish landscapes to create an endless, algorithmically-driven animation, blurring the line between the real and the imagined.",
-    video: "https://drive.google.com/uc?export=download&id=1BN0VXer51bIIWMDTTUhZrR6jxNBsR3Ag",
+    video: "https://player.vimeo.com/video/1129570738?h=1768ffda44",
     images: {
       hero: "/images/AI and Hybrid campaigns_1.png",
       gallery: [
@@ -47,7 +47,7 @@ export const projects = [
     role: "AI Artist / VFX Art Director",
     shortDescription: "Role: AI Artist / VFX Art Director",
     description: "The Challenge: To create a fully AI-generated car sequence with absolute photorealism and temporal consistency. The core difficulty was maintaining the vehicle's integrity and dynamic motion across a series of complex, generative shots.\n\nThe Approach: I engineered a proprietary workflow that layers generative AI for environments with advanced object inpainting and coherence models. This method ensures the vehicle remains perfectly consistent while allowing for dynamic, cinematic camera movement, delivering a final, polished sequence.",
-    video: "https://drive.google.com/uc?export=download&id=1KXSdXhqJaOo-5AcHkN_F1k2YDdMRSwx5",
+    video: "https://player.vimeo.com/video/1129571713?h=9e784ab9f0",
     images: {
       hero: "/images/AI and Hybrid campaigns_5.jpeg",
       gallery: [
@@ -70,7 +70,7 @@ export const projects = [
     role: "AI Artist / Creative Technologist",
     shortDescription: "Role: AI Artist / Creative Technologist",
     description: "The Challenge: To generate dynamic, hyperrealistic macro footage of food ingredients, a task traditionally requiring complex and expensive high-speed camera rigs.\n\nThe Approach: Architected a novel AI pipeline, training models to produce stunningly detailed macro shots with fluid camera motion, providing unparalleled creative freedom and production efficiency.",
-    video: "https://drive.google.com/uc?export=download&id=1ajf63ClB83K-q1f0MDu83mQPm_mBP7I0",
+    video: "https://player.vimeo.com/video/1129569198?h=4579aecc7f",
     images: {
       hero: "/images/AI and Hybrid campaigns_11.jpg",
       gallery: [
