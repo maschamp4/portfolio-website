@@ -30,6 +30,7 @@ class Hero {
     this.isAnimated = false;
     this.animations = []; // Store GSAP animations for cleanup
     this.prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    this.isMobileOrTablet = window.innerWidth <= 1024; // Disable animations on mobile/tablet
   }
 
   /**
@@ -79,6 +80,17 @@ class Hero {
    * Animates title lines, tagline, and subtitle
    */
   setupTextAnimations() {
+    // Skip animations on mobile/tablet - just show content immediately
+    if (this.isMobileOrTablet) {
+      if (this.tagline) gsap.set(this.tagline, { opacity: 1, y: 0 });
+      if (this.titleLines.length > 0) gsap.set(this.titleLines, { opacity: 1, y: 0 });
+      if (this.subtitle) gsap.set(this.subtitle, { opacity: 1, y: 0 });
+      if (this.ctaButtons.length > 0) gsap.set(this.ctaButtons, { opacity: 1, y: 0 });
+      this.isAnimated = true;
+      eventBus.emit('hero:animated');
+      return;
+    }
+
     // Animate tagline
     if (this.tagline) {
       this.animateTagline();
@@ -355,7 +367,7 @@ class Hero {
    */
   setupCursorInteraction() {
     if (!this.title || this.titleLines.length === 0) return;
-    if (this.prefersReducedMotion) return;
+    if (this.prefersReducedMotion || this.isMobileOrTablet) return; // Disable on mobile/tablet
 
     // Store original text for each line
     this.originalText = this.titleLines.map(line => line.textContent);
