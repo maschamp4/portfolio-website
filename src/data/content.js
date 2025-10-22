@@ -1,15 +1,14 @@
 /**
  * Portfolio Content Data
- * All placeholder content from CONTENT_STRUCTURE.md converted to JavaScript objects
+ * All content for portfolio website
  */
 
 /**
  * Hero Section Content
  */
 export const hero = {
-  tagline: "MASCHA   Creative Technologist | Visual Artist with a feeling for style and deep expertise in cinematic language",
-  title: ["Visual Artist", "Creative Technologist"],
-  subtitle: "Crafting the Future of Cinematic Storytelling.",
+  title: ["VISUAL", "ARTIST", "CREATIVE", "TECHNOLO", "GIST"],
+  subtitle: "Crafting the Future of Cinematic Storytelling."
 };
 
 /**
@@ -17,149 +16,101 @@ export const hero = {
  */
 export const projects = [
   {
-    id: "immersive-installation-dac",
-    title: "Immersive Installation (DAC, 2025)",
-    category: "Immersive Art Installation",
+    id: "immersive-installation",
+    title: "Immersive Installation",
+    client: "Danish Architecture Center",
     year: "2025",
-    client: "DAC (Danish Architecture Center)",
+    category: "Immersive Art Installation",
     role: "Artist",
     shortDescription: "Role: Artist",
     description: "The Challenge: To create a non-repeating, photorealistic animated journey through a synthetic world, maintaining visual coherence and a meditative, dreamlike quality for an immersive installation.\n\nThe Approach: Trained a bespoke generative model on Danish landscapes to create an endless, algorithmically-driven animation, blurring the line between the real and the imagined.",
-    longDescription: "Created a groundbreaking immersive installation for the Danish Architecture Center that pushes the boundaries of AI-generated art. The project required developing a custom generative model trained specifically on Danish landscapes to produce an infinite, non-repeating visual journey. The installation maintains photorealistic quality while creating a meditative, dreamlike atmosphere that challenges viewers' perception of reality.",
-    technologies: [
-      "Custom AI Model Training",
-      "Stable Diffusion",
-      "ComfyUI",
-      "Real-time Generation",
-      "Danish Landscape Dataset",
-      "Projection Mapping"
-    ],
+    video: "/videos/Immersive Installation.mp4",
+    images: {
+      hero: "/images/AI and Hybrid campaigns_1.png",
+      gallery: [
+        "/images/AI and Hybrid campaigns_2.png",
+        "/images/AI and Hybrid campaigns_3.avif"
+      ]
+    },
+    technologies: ["Generative AI", "Custom Models", "Custom Workflow"],
+    metrics: {
+      label: "Installation Duration",
+      value: "Endless Loop"
+    }
+  },
+  {
+    id: "spec-film-porsche",
+    title: "AI Film",
+    client: "Porsche",
+    year: "2025",
+    category: "AI Cinematography",
+    role: "AI Artist / VFX Art Director",
+    shortDescription: "Role: AI Artist / VFX Art Director",
+    description: "The Challenge: To create a fully AI-generated car sequence with absolute photorealism and temporal consistency. The core difficulty was maintaining the vehicle's integrity and dynamic motion across a series of complex, generative shots.\n\nThe Approach: I engineered a proprietary workflow that layers generative AI for environments with advanced object inpainting and coherence models. This method ensures the vehicle remains perfectly consistent while allowing for dynamic, cinematic camera movement, delivering a final, polished sequence.",
+    video: "/videos/Spec Film.mp4",
+    images: {
+      hero: "/images/AI and Hybrid campaigns_5.jpeg",
+      gallery: [
+        "/images/AI and Hybrid campaigns_8.png",
+        "/images/AI and Hybrid campaigns_9.jpg"
+      ]
+    },
+    technologies: ["AI Cinematography", "Product Coherence", "Inpaint Workflows"],
+    metrics: {
+      label: "Shots Generated",
+      value: "50+"
+    }
+  },
+  {
+    id: "tv-commercial-burger-king",
+    title: "TV Commercial",
+    client: "Burger King",
+    year: "2025",
+    category: "Commercial AI Production",
+    role: "AI Artist / Creative Technologist",
+    shortDescription: "Role: AI Artist / Creative Technologist",
+    description: "The Challenge: To generate dynamic, hyperrealistic macro footage of food ingredients, a task traditionally requiring complex and expensive high-speed camera rigs.\n\nThe Approach: Architected a novel AI pipeline, training models to produce stunningly detailed macro shots with fluid camera motion, providing unparalleled creative freedom and production efficiency.",
+    video: "/videos/TV Commercial.mp4",
+    images: {
+      hero: "/images/AI and Hybrid campaigns_11.jpg",
+      gallery: [
+        "/images/AI and Hybrid campaigns_10.jpg",
+        "/images/AI and Hybrid campaigns_4.avif"
+      ]
+    },
+    technologies: ["Macro AI Generation", "Custom Pipelines", "High-Speed Simulation", "Food LoRA Training"],
+    metrics: {
+      label: "Production Time Saved",
+      value: "70%"
+    }
+  },
+  {
+    id: "ai-hybrid-campaigns",
+    title: "Numerous AI and Hybrid Campaigns",
+    client: "Porsche, VW, Burger King, MAN and others",
+    year: "2023-2024",
+    category: "Multiple Campaigns",
+    role: "AI Director / Creative Technologist",
+    shortDescription: "Role: AI Director / Creative Technologist",
+    description: "A collection of cutting-edge campaigns combining AI-generated content with traditional production methods, pushing the boundaries of what's possible in commercial visual storytelling.",
     images: {
       hero: "/images/AI and Hybrid campaigns_1.png",
       gallery: [
         "/images/AI and Hybrid campaigns_2.png",
         "/images/AI and Hybrid campaigns_3.avif",
-        "/images/AI and Hybrid campaigns_4.avif"
-      ]
-    },
-    video: "/videos/Immersive Installation.mp4",
-    link: "#case-study-dac",
-    featured: true,
-    metrics: {
-      duration: "Infinite loop",
-      modelType: "Custom trained",
-      exhibition: "DAC 2025"
-    },
-    recognition: "Exhibited at Danish Architecture Center 2025"
-  },
-  {
-    id: "spec-film-porsche",
-    title: "Spec Film (for Porsche)",
-    category: "AI Cinematography",
-    year: "2024",
-    client: "Porsche (Spec Project)",
-    role: "AI Director / VFX Art Director",
-    shortDescription: "Role: AI Director / VFX Art Director",
-    description: "The Challenge: To generate and seamlessly animation a photorealistic vehicle in fully AI-generated environments, ensuring temporal consistency, dynamic realism and cinematic quality across every shot.\n\nThe Approach: Developed a hybrid workflow combining generative backgrounds with advanced inpainting and temporal coherence techniques to produce a dynamic, fully synthetic cinematic sequence.",
-    longDescription: "Developed an innovative AI-driven cinematographic approach for a Porsche spec film. The project required generating photorealistic vehicle animations within fully AI-created environments while maintaining temporal consistency and cinematic quality throughout. By combining generative backgrounds with advanced inpainting and temporal coherence techniques, created a seamless, dynamic visual experience that showcases the potential of AI in automotive advertising.",
-    technologies: [
-      "Stable Diffusion",
-      "ControlNet",
-      "Temporal Coherence AI",
-      "Advanced Inpainting",
-      "ComfyUI",
-      "After Effects",
-      "DaVinci Resolve"
-    ],
-    images: {
-      hero: "/images/AI and Hybrid campaigns_5.jpeg",
-      gallery: [
-        "/images/AI and Hybrid campaigns_8.png",
-        "/images/AI and Hybrid campaigns_9.jpg",
-        "/images/AI and Hybrid campaigns_10.jpg"
-      ]
-    },
-    video: "/videos/Spec Film.mp4",
-    link: "#case-study-porsche",
-    featured: true,
-    metrics: {
-      shots: "Multiple cinematic sequences",
-      technique: "Hybrid AI workflow",
-      quality: "Photorealistic"
-    },
-    recognition: "Porsche Spec Film 2024"
-  },
-  {
-    id: "tv-commercial-burger-king",
-    title: "TV Commercial (for Burger King)",
-    category: "Commercial AI Production",
-    year: "2024",
-    client: "Burger King",
-    role: "AI Director / Creative Technologist",
-    shortDescription: "Role: AI Director / Creative Technologist",
-    description: "The Challenge: To generate dynamic, hyperrealistic macro footage of food ingredients, a task traditionally requiring complex and expensive high-speed camera rigs.\n\nThe Approach: Architected a novel AI pipeline, training models to produce stunningly detailed macro shots with fluid camera motion, providing unparalleled creative freedom and production efficiency.",
-    longDescription: "Revolutionized food commercial production by developing an AI pipeline that generates hyperrealistic macro footage without expensive high-speed camera equipment. The project involved training custom models to create stunning macro shots of food ingredients with dynamic camera movements. This novel approach provides unprecedented creative freedom while dramatically reducing production costs and time, setting a new standard for food advertising.",
-    technologies: [
-      "Custom AI Model Training",
-      "Macro Photography AI",
-      "Stable Diffusion",
-      "High-Speed Camera Simulation",
-      "ComfyUI",
-      "After Effects"
-    ],
-    images: {
-      hero: "/images/AI and Hybrid campaigns_11.jpg",
-      gallery: [
-        "/images/AI and Hybrid campaigns_1.png",
-        "/images/AI and Hybrid campaigns_2.png",
-        "/images/AI and Hybrid campaigns_3.avif"
-      ]
-    },
-    video: "/videos/TV Commercial.mp4",
-    link: "#case-study-burger-king",
-    featured: true,
-    metrics: {
-      costSavings: "Significant vs traditional",
-      quality: "Hyperrealistic macro",
-      efficiency: "Rapid production"
-    },
-    recognition: "Burger King TV Commercial 2024"
-  },
-  {
-    id: "ai-hybrid-campaigns",
-    title: "Numerous AI and Hybrid Campaigns",
-    category: "Commercial AI Production",
-    year: "2022-2024",
-    client: "Porsche, VW, Burger King, MAN and others",
-    role: "AI Director / Creative Technologist",
-    shortDescription: "Role: AI Director / Creative Technologist\nClients: Porsche; VW, Burger King, MAN and others",
-    description: "Worked on numerous AI and hybrid campaigns for major brands including Porsche, VW, Burger King, MAN and others. Bringing cutting-edge AI technology to commercial production while maintaining the highest standards of creative quality and brand identity.",
-    longDescription: "Led AI integration and creative technology across multiple high-profile campaigns for major automotive and food brands. Projects span from full AI-generated content to hybrid workflows that blend traditional production with AI enhancement. Clients include Porsche, Volkswagen, Burger King, MAN Trucks, and other leading brands. Each project demonstrates how AI can enhance creative possibilities while respecting brand guidelines and maintaining production excellence.",
-    technologies: [
-      "Stable Diffusion",
-      "ComfyUI",
-      "ControlNet",
-      "After Effects",
-      "DaVinci Resolve",
-      "Custom AI Workflows",
-      "Hybrid Production Pipelines"
-    ],
-    images: {
-      hero: "/images/AI and Hybrid campaigns_4.avif",
-      gallery: [
+        "/images/AI and Hybrid campaigns_4.avif",
         "/images/AI and Hybrid campaigns_5.jpeg",
         "/images/AI and Hybrid campaigns_8.png",
-        "/images/AI and Hybrid campaigns_9.jpg"
+        "/images/AI and Hybrid campaigns_9.jpg",
+        "/images/AI and Hybrid campaigns_10.jpg",
+        "/images/AI and Hybrid campaigns_11.jpg"
       ]
     },
-    link: "#case-study-campaigns",
-    featured: true,
+    technologies: ["AI Generation", "Art Direction", "Hybrid Workflows", "Inpainting", "Coherent product"],
     metrics: {
-      clients: "Porsche, VW, Burger King, MAN, others",
-      campaigns: "Numerous",
-      years: "2022-2024"
-    },
-    recognition: "Multiple brand campaigns 2022-2024"
+      label: "Campaigns Delivered",
+      value: "15+"
+    }
   }
 ];
 
@@ -204,43 +155,17 @@ export const experience = {
   ],
   skills: [
     {
-      category: "AI & Machine Learning",
-      items: [
-        { name: "ComfyUI", level: 95 },
-        { name: "Stable Diffusion", level: 90 },
-        { name: "Midjourney", level: 85 },
-        { name: "Custom Model Training", level: 80 },
-        { name: "Python (AI/ML)", level: 85 },
-        { name: "TensorFlow/PyTorch", level: 75 }
-      ]
-    },
-    {
-      category: "VFX & Compositing",
-      items: [
-        { name: "Nuke", level: 90 },
-        { name: "After Effects", level: 95 },
-        { name: "DaVinci Resolve", level: 85 },
-        { name: "Houdini", level: 70 },
-        { name: "Mocha Pro", level: 80 }
-      ]
-    },
-    {
-      category: "Creative Technology",
-      items: [
-        { name: "TouchDesigner", level: 85 },
-        { name: "Unreal Engine", level: 75 },
-        { name: "Projection Mapping", level: 80 },
-        { name: "Real-time Rendering", level: 85 }
-      ]
-    },
-    {
       category: "Technical Skills",
       items: [
-        { name: "Python", level: 90 },
-        { name: "JavaScript", level: 75 },
-        { name: "GLSL Shaders", level: 70 },
-        { name: "Git/Version Control", level: 85 },
-        { name: "Pipeline Development", level: 80 }
+        { name: "pipeline development", level: 90 },
+        { name: "comfyui", level: 90 },
+        { name: "model training", level: 90 },
+        { name: "python", level: 70 },
+        { name: "java", level: 50 },
+        { name: "photoshop", level: 95 },
+        { name: "after effects", level: 95 },
+        { name: "unreal engine", level: 80 },
+        { name: "touchdesigner", level: 70 }
       ]
     }
   ],
@@ -270,29 +195,26 @@ export const awards = {
   items: [
     {
       title: "Gerety Awards",
-      category: "Silver, AI Artist - The Ad No Man Saw",
+      category: "Silver, AI Artist",
       organization: "Gerety Awards",
       year: "2025",
-      logo: "/images/gerety-logo.svg",
-      description: "",
+      description: "The Ad No Man Saw",
       project: "The Ad No Man Saw"
     },
     {
       title: "ADC Annual Awards",
-      category: "Merit - At Second Glance",
+      category: "Merit",
       organization: "ADC",
       year: "2024",
-      logo: "/images/adc-logo.svg",
-      description: "",
+      description: "At Second Glance",
       project: "At Second Glance"
     },
     {
       title: "Europe's Top Art Directors",
-      category: "Ranked among Europe's Top Art Directors",
-      organization: "ADC Annual Ranking",
+      category: "Ranking",
+      organization: "ADC",
       year: "2024",
-      logo: "/images/adc-logo.svg",
-      description: "ADC Annual Ranking 2024",
+      description: "Ranked among Europe's Top Art Directors, ADC Annual Ranking 2024",
       project: ""
     }
   ]
@@ -304,7 +226,7 @@ export const awards = {
 export const contact = {
   availability: {
     status: "Available for select projects",
-    startDate: "Q2 2025",
+    startDate: null,
     preferredProjectTypes: [
       "Feature Films (VFX)",
       "High-end Commercials",
@@ -320,9 +242,9 @@ export const contact = {
     remoteWork: true,
     willingToTravel: true
   },
-  email: "hello@mascha.art",
+  email: "m.sheludiakova@gmail.com",
   socialMedia: {
-    linkedin: "https://linkedin.com/in/mascha-artist",
+    linkedin: "https://www.linkedin.com/in/mascha-sheludiakova/",
     instagram: "https://instagram.com/mascha.visuals",
     vimeo: "https://vimeo.com/mascha",
     twitter: "https://twitter.com/mascha_tech",

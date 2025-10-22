@@ -1,6 +1,6 @@
 /**
  * Projects Component
- * Showcase featured projects with hover effects and scroll animations
+ * Showcase featured projects with videos, image galleries, and Challenge/Approach format
  * Reference: COMPONENTS.md lines 296-602
  */
 
@@ -18,7 +18,9 @@ class Projects {
       return;
     }
 
-    this.grid = this.element.querySelector('.projects__grid');
+    // Support both .projects__grid and #projects-list
+    this.grid = this.element.querySelector('#projects-list') || 
+                this.element.querySelector('.projects__grid');
     this.projectCards = [];
     
     // State
@@ -27,7 +29,7 @@ class Projects {
     this.prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     
     // Intersection observer for lazy loading
-    this.imageObserver = null;
+    this.mediaObserver = null;
     
     // Store animations for cleanup
     this.animations = [];
@@ -44,7 +46,7 @@ class Projects {
     this.renderProjects();
     this.setupScrollAnimations();
     this.setupHoverEffects();
-    this.setupImageLazyLoading();
+    this.setupMediaLazyLoading();
     this.setupModalSetup();
 
     this.isInitialized = true;
@@ -60,11 +62,13 @@ class Projects {
       return;
     }
 
-    // Filter for featured projects
-    const featuredProjects = this.projects.filter(project => project.featured);
+    // Filter for featured projects (or use all if featured flag not present)
+    const featuredProjects = this.projects.filter(project => 
+      project.featured !== false
+    );
 
     if (featuredProjects.length === 0) {
-      console.warn('Projects: No featured projects found');
+      console.warn('Projects: No projects found');
       return;
     }
 
@@ -80,60 +84,169 @@ class Projects {
     // Store card references
     this.projectCards = Array.from(this.grid.querySelectorAll('.project-card'));
 
-    console.log(`Projects: Rendered ${featuredProjects.length} featured projects`);
+    console.log(`Projects: Rendered ${featuredProjects.length} projects`);
   }
 
   /**
-   * Create project card HTML element
+   * Create project card HTML element with proper structure
    * @param {Object} project - Project data object
    * @param {number} index - Project index
    * @returns {HTMLElement} Project card element
    */
   createProjectCard(project, index) {
     const card = document.createElement('article');
-    card.className = `project-card project-card--${index % 2 === 0 ? 'left' : 'right'}`;
+    card.className = 'project-card';
     card.setAttribute('data-project-id', project.id);
     card.setAttribute('data-index', index);
 
-    // Build technologies/tags list
-    const tagsHTML = project.technologies
-      .slice(0, 5) // Limit to first 5 technologies
-      .map(tech => `<li class="tag">${tech}</li>`)
-      .join('');
+    // Create media section (video or image gallery)
+    const mediaHTML = this.createMediaSection(project);
 
-    // Create card HTML
+    // Parse description for Challenge/Approach format
+    const descriptionHTML = this.parseDescription(project.description);
+
+    // Build technologies/tags list
+    const techHTML = project.technologies && project.technologies.length > 0
+      ? `<div class="project__tech">
+           ${project.technologies.map(tech => 
+             `<span class="tech-tag">${tech}</span>`
+           ).join('')}
+         </div>`
+      : '';
+
+    // Create card HTML with proper structure
     card.innerHTML = `
-      <div class="project-card__image-wrapper">
-        <img 
-          class="project-card__image" 
-          data-src="${project.images.hero}" 
-          alt="${project.title}"
-          loading="lazy"
-        />
-        <div class="project-card__overlay">
-          <a href="${project.link || '#'}" class="project-card__link" data-project="${project.id}">
-            View Case Study →
-          </a>
-        </div>
-      </div>
+      ${mediaHTML}
       
-      <div class="project-card__content">
-        <span class="project-card__category">${project.category}</span>
-        <h3 class="project-card__title">${project.title}</h3>
-        <p class="project-card__description">${project.description}</p>
-        
-        <div class="project-card__meta">
-          <span class="project-card__role">${project.role}</span>
-          <span class="project-card__year">${project.year}</span>
+      <div class="project__content">
+        <div class="project__meta">
+          <span class="project__year">${project.year}</span>
+          <span class="project__client">${project.client}</span>
         </div>
         
-        <ul class="project-card__tags">
-          ${tagsHTML}
-        </ul>
+        <h3 class="project__title">${project.title}</h3>
+        <p class="project__role">${project.shortDescription || `Role: ${project.role}`}</p>
+        
+        <div class="project__description">
+          ${descriptionHTML}
+        </div>
+        
+        ${techHTML}
       </div>
     `;
 
     return card;
+  }
+
+  /**
+   * Create media section (video or image gallery)
+   * @param {Object} project - Project data object
+   * @returns {string} Media section HTML
+   */
+  createMediaSection(project) {
+    // Check if project has video
+    if (project.video) {
+      return `
+        <div class="project__media">
+          <video 
+            class="project__video" 
+            data-src="${project.video}"
+            autoplay 
+            muted 
+            loop 
+            playsinline
+            aria-label="${project.title} video"
+          >
+            <source data-src="${project.video}" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </div>
+      `;
+    }
+    
+    // Check if project has image gallery
+    if (project.images && project.images.gallery && project.images.gallery.length > 0) {
+      const galleryHTML = project.images.gallery.map((imageSrc, idx) =>
+        `<img
+          class="project__gallery-image"
+          data-src="${imageSrc}"
+          alt="${project.title} - Image ${idx + 1}"
+          loading="lazy"
+        />`
+      ).join('');
+      
+      const indicatorsHTML = project.images.gallery.map((_, idx) =>
+        `<span class="project__gallery-indicator ${idx === 0 ? 'active' : ''}" data-index="${idx}"></span>`
+      ).join('');
+      
+      return `
+        <div class="project__media">
+          <div class="project__gallery">
+            <div class="project__gallery-container">
+              ${galleryHTML}
+            </div>
+            ${project.images.gallery.length > 1 ? `
+              <div class="project__gallery-nav">
+                <button class="project__gallery-btn project__gallery-btn--prev" aria-label="Previous image">
+                  ‹
+                </button>
+                <button class="project__gallery-btn project__gallery-btn--next" aria-label="Next image">
+                  ›
+                </button>
+              </div>
+              <div class="project__gallery-indicators">
+                ${indicatorsHTML}
+              </div>
+            ` : ''}
+          </div>
+        </div>
+      `;
+    }
+    
+    // Fallback to hero image
+    if (project.images && project.images.hero) {
+      return `
+        <div class="project__media">
+          <img 
+            class="project__image" 
+            data-src="${project.images.hero}" 
+            alt="${project.title}"
+            loading="lazy"
+          />
+        </div>
+      `;
+    }
+
+    // No media available
+    return '<div class="project__media"></div>';
+  }
+
+  /**
+   * Parse description to format Challenge/Approach sections
+   * @param {string} description - Project description
+   * @returns {string} Formatted description HTML
+   */
+  parseDescription(description) {
+    if (!description) return '';
+
+    // Split by double newline to separate paragraphs
+    const paragraphs = description.split('\n\n').filter(p => p.trim());
+
+    return paragraphs.map(para => {
+      const trimmed = para.trim();
+      
+      // Check if it starts with "The Challenge:" or "The Approach:"
+      if (trimmed.startsWith('The Challenge:') || trimmed.startsWith('The Approach:')) {
+        // Split keyword from text
+        const colonIndex = trimmed.indexOf(':');
+        const keyword = trimmed.substring(0, colonIndex + 1);
+        const text = trimmed.substring(colonIndex + 1);
+        
+        return `<p><span class="project__keyword">${keyword}</span><span class="project__text">${text}</span></p>`;
+      }
+      
+      return `<p>${trimmed}</p>`;
+    }).join('');
   }
 
   /**
@@ -154,20 +267,20 @@ class Projects {
         });
       }
 
-      // Set up image parallax for each card
-      const image = card.querySelector('.project-card__image');
-      if (image) {
-        this.setupImageParallax(card, image);
+      // Set up media parallax for each card
+      const media = card.querySelector('.project__media');
+      if (media) {
+        this.setupMediaParallax(card, media);
       }
     });
   }
 
   /**
-   * Set up image parallax effect with GSAP
+   * Set up media parallax effect with GSAP
    * @param {HTMLElement} card - Project card element
-   * @param {HTMLElement} image - Image element
+   * @param {HTMLElement} media - Media element
    */
-  setupImageParallax(card, image) {
+  setupMediaParallax(card, media) {
     if (this.prefersReducedMotion) {
       return;
     }
@@ -175,7 +288,7 @@ class Projects {
     // Use GSAP ScrollTrigger for smooth parallax
     // Note: This is handled automatically by ScrollAnimations.js
     // but we can set initial state here
-    gsap.set(image, {
+    gsap.set(media, {
       y: 0,
     });
   }
@@ -186,53 +299,37 @@ class Projects {
    */
   setupHoverEffects() {
     this.projectCards.forEach(card => {
-      const image = card.querySelector('.project-card__image');
-      const overlay = card.querySelector('.project-card__overlay');
-      const imageWrapper = card.querySelector('.project-card__image-wrapper');
+      const media = card.querySelector('.project__media');
+      const video = card.querySelector('.project__video');
+      const image = card.querySelector('.project__image, .project__gallery-image');
 
-      if (!image || !overlay) return;
+      if (!media) return;
 
-      // Set initial overlay state
-      gsap.set(overlay, { opacity: 0 });
-
-      // Mouse enter - scale image and show overlay with GSAP
+      // Mouse enter - scale media
       card.addEventListener('mouseenter', () => {
-        if (this.prefersReducedMotion) {
-          overlay.style.opacity = '1';
-          return;
-        }
+        if (this.prefersReducedMotion) return;
 
-        gsap.to(image, {
-          scale: 1.1,
+        gsap.to(media, {
+          scale: 1.05,
           duration: 0.6,
           ease: 'power2.out',
         });
-        
-        gsap.to(overlay, {
-          opacity: 1,
-          duration: 0.4,
-          ease: 'power2.out',
-        });
+
+        // Pause video on hover for better viewing
+        if (video && !video.paused) {
+          // Keep playing, just scale
+        }
 
         eventBus.emit('project:hover', { projectId: card.dataset.projectId });
       });
 
-      // Mouse leave - reset with GSAP
+      // Mouse leave - reset
       card.addEventListener('mouseleave', () => {
-        if (this.prefersReducedMotion) {
-          overlay.style.opacity = '0';
-          return;
-        }
+        if (this.prefersReducedMotion) return;
 
-        gsap.to(image, {
+        gsap.to(media, {
           scale: 1,
           duration: 0.5,
-          ease: 'power2.out',
-        });
-        
-        gsap.to(overlay, {
-          opacity: 0,
-          duration: 0.3,
           ease: 'power2.out',
         });
       });
@@ -261,49 +358,104 @@ class Projects {
   }
 
   /**
-   * Set up lazy loading for project images
+   * Set up lazy loading for project videos and images
    */
-  setupImageLazyLoading() {
-    // Create intersection observer for images
-    const imageObserverOptions = {
+  setupMediaLazyLoading() {
+    // Create intersection observer for media
+    const mediaObserverOptions = {
       root: null,
-      rootMargin: '50px',
+      rootMargin: '100px',
       threshold: 0.01
     };
 
-    this.imageObserver = new IntersectionObserver((entries) => {
+    this.mediaObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          const img = entry.target;
-          const src = img.getAttribute('data-src');
+          const media = entry.target;
           
-          if (src) {
-            this.loadImage(img, src);
-            this.imageObserver.unobserve(img);
+          if (media.tagName === 'VIDEO') {
+            this.loadVideo(media);
+          } else if (media.tagName === 'IMG') {
+            this.loadImage(media);
           }
+          
+          this.mediaObserver.unobserve(media);
         }
       });
-    }, imageObserverOptions);
+    }, mediaObserverOptions);
 
-    // Observe all project images
-    const images = this.element.querySelectorAll('img[data-src]');
-    images.forEach(img => {
-      this.imageObserver.observe(img);
+    // Observe all videos
+    const videos = this.element.querySelectorAll('video[data-src]');
+    videos.forEach(video => {
+      this.mediaObserver.observe(video);
     });
 
-    console.log(`Projects: Lazy loading enabled for ${images.length} images`);
+    // Observe all images
+    const images = this.element.querySelectorAll('img[data-src]');
+    images.forEach(img => {
+      this.mediaObserver.observe(img);
+    });
+
+    console.log(`Projects: Lazy loading enabled for ${videos.length} videos and ${images.length} images`);
+  }
+
+  /**
+   * Load video with fade-in effect
+   * @param {HTMLVideoElement} video - Video element
+   */
+  loadVideo(video) {
+    const src = video.getAttribute('data-src');
+    if (!src) return;
+
+    video.style.opacity = '0';
+    video.style.transition = 'opacity 0.5s ease';
+
+    // Get source element
+    const source = video.querySelector('source[data-src]');
+    
+    if (source) {
+      source.src = src;
+      source.removeAttribute('data-src');
+    }
+    
+    video.src = src;
+    video.removeAttribute('data-src');
+
+    // Handle load events
+    video.addEventListener('loadeddata', () => {
+      video.style.opacity = '1';
+      video.play().catch(err => {
+        console.warn('Projects: Video autoplay failed:', err);
+      });
+    }, { once: true });
+
+    video.addEventListener('error', (e) => {
+      console.error(`Projects: Failed to load video: ${src}`, e);
+      video.style.opacity = '0.3';
+      
+      // Create fallback message
+      const fallback = document.createElement('div');
+      fallback.className = 'project__media-fallback';
+      fallback.textContent = 'Video unavailable';
+      video.parentElement.appendChild(fallback);
+    }, { once: true });
+
+    video.load();
   }
 
   /**
    * Load image with fade-in effect
    * @param {HTMLImageElement} img - Image element
-   * @param {string} src - Image source URL
    */
-  loadImage(img, src) {
+  loadImage(img) {
+    const src = img.getAttribute('data-src');
+    if (!src) return;
+
     img.style.opacity = '0';
     img.style.transition = 'opacity 0.5s ease';
 
     const tempImg = new Image();
+    
     tempImg.onload = () => {
       img.src = src;
       img.removeAttribute('data-src');
@@ -316,8 +468,8 @@ class Projects {
 
     tempImg.onerror = () => {
       console.error(`Projects: Failed to load image: ${src}`);
-      // Set placeholder or error image
-      img.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"%3E%3Crect fill="%23333" width="400" height="300"/%3E%3C/svg%3E';
+      // Set placeholder
+      img.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"%3E%3Crect fill="%23333" width="400" height="300"/%3E%3Ctext x="50%25" y="50%25" fill="%23999" text-anchor="middle"%3EImage unavailable%3C/text%3E%3C/svg%3E';
       img.style.opacity = '0.3';
     };
 
@@ -329,20 +481,159 @@ class Projects {
    * Basic structure - full implementation would require modal component
    */
   setupModalSetup() {
-    const projectLinks = this.element.querySelectorAll('.project-card__link');
-
-    projectLinks.forEach(link => {
-      link.addEventListener('click', (e) => {
-        e.preventDefault();
+    this.projectCards.forEach(card => {
+      card.addEventListener('click', (e) => {
+        // Don't trigger if clicking on a link or interactive element
+        if (e.target.tagName === 'A' || e.target.tagName === 'BUTTON') {
+          return;
+        }
         
-        const projectId = link.getAttribute('data-project');
+        // Don't trigger if interacting with gallery
+        if (e.target.closest('.project__gallery')) {
+          return;
+        }
+
+        const projectId = card.getAttribute('data-project-id');
         const project = this.projects.find(p => p.id === projectId);
 
         if (project) {
           this.openProjectDetail(project);
         }
       });
+
+      // Add cursor pointer to indicate clickability
+      card.style.cursor = 'pointer';
+      
+      // Setup gallery navigation for this card
+      this.setupGalleryNavigation(card);
     });
+  }
+
+  /**
+   * Setup interactive gallery navigation
+   * @param {HTMLElement} card - Project card element
+   */
+  setupGalleryNavigation(card) {
+    const gallery = card.querySelector('.project__gallery');
+    if (!gallery) return;
+
+    const container = gallery.querySelector('.project__gallery-container');
+    const prevBtn = gallery.querySelector('.project__gallery-btn--prev');
+    const nextBtn = gallery.querySelector('.project__gallery-btn--next');
+    const indicators = gallery.querySelectorAll('.project__gallery-indicator');
+    const images = gallery.querySelectorAll('.project__gallery-image');
+
+    if (!container || images.length <= 1) return;
+
+    let currentIndex = 0;
+
+    // Scroll to specific image
+    const scrollToImage = (index) => {
+      if (index < 0 || index >= images.length) return;
+      
+      const image = images[index];
+      const scrollLeft = image.offsetLeft - container.offsetLeft;
+      
+      container.scrollTo({
+        left: scrollLeft,
+        behavior: 'smooth'
+      });
+      
+      currentIndex = index;
+      updateIndicators();
+    };
+
+    // Update active indicator
+    const updateIndicators = () => {
+      indicators.forEach((indicator, idx) => {
+        indicator.classList.toggle('active', idx === currentIndex);
+      });
+    };
+
+    // Previous button
+    if (prevBtn) {
+      prevBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const newIndex = currentIndex > 0 ? currentIndex - 1 : images.length - 1;
+        scrollToImage(newIndex);
+      });
+    }
+
+    // Next button
+    if (nextBtn) {
+      nextBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const newIndex = currentIndex < images.length - 1 ? currentIndex + 1 : 0;
+        scrollToImage(newIndex);
+      });
+    }
+
+    // Indicator clicks
+    indicators.forEach((indicator, index) => {
+      indicator.addEventListener('click', (e) => {
+        e.stopPropagation();
+        scrollToImage(index);
+      });
+    });
+
+    // Update current index based on scroll position
+    let scrollTimeout;
+    container.addEventListener('scroll', () => {
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => {
+        const scrollLeft = container.scrollLeft;
+        const containerWidth = container.offsetWidth;
+        
+        // Find closest image
+        let closestIndex = 0;
+        let minDistance = Infinity;
+        
+        images.forEach((img, idx) => {
+          const imgLeft = img.offsetLeft - container.offsetLeft;
+          const distance = Math.abs(scrollLeft - imgLeft);
+          
+          if (distance < minDistance) {
+            minDistance = distance;
+            closestIndex = idx;
+          }
+        });
+        
+        if (closestIndex !== currentIndex) {
+          currentIndex = closestIndex;
+          updateIndicators();
+        }
+      }, 100);
+    });
+
+    // Touch/swipe support for mobile
+    let touchStartX = 0;
+    let touchEndX = 0;
+    
+    container.addEventListener('touchstart', (e) => {
+      touchStartX = e.touches[0].clientX;
+    }, { passive: true });
+    
+    container.addEventListener('touchend', (e) => {
+      touchEndX = e.changedTouches[0].clientX;
+      handleSwipe();
+    }, { passive: true });
+    
+    const handleSwipe = () => {
+      const swipeThreshold = 50;
+      const diff = touchStartX - touchEndX;
+      
+      if (Math.abs(diff) > swipeThreshold) {
+        if (diff > 0) {
+          // Swipe left - next image
+          const newIndex = currentIndex < images.length - 1 ? currentIndex + 1 : 0;
+          scrollToImage(newIndex);
+        } else {
+          // Swipe right - previous image
+          const newIndex = currentIndex > 0 ? currentIndex - 1 : images.length - 1;
+          scrollToImage(newIndex);
+        }
+      }
+    };
   }
 
   /**
@@ -356,14 +647,13 @@ class Projects {
     eventBus.emit('project:detail-opened', { project });
 
     // TODO: Implement modal component
-    // For now, just log or show alert
-    alert(`Project detail view coming soon!\n\nProject: ${project.title}\n${project.longDescription}`);
-    
-    // Future implementation would:
-    // 1. Create/show modal overlay
-    // 2. Populate modal with project details
-    // 3. Add close functionality
-    // 4. Handle escape key and backdrop clicks
+    // For now, just log
+    console.log('Project details:', {
+      title: project.title,
+      client: project.client,
+      year: project.year,
+      description: project.description
+    });
   }
 
   /**
@@ -380,7 +670,8 @@ class Projects {
     this.renderProjects();
     this.setupScrollAnimations();
     this.setupHoverEffects();
-    this.setupImageLazyLoading();
+    this.setupMediaLazyLoading();
+    this.setupModalSetup();
 
     console.log(`Projects: Filtered by category: ${category}`);
   }
@@ -401,7 +692,7 @@ class Projects {
     this.renderProjects();
     this.setupScrollAnimations();
     this.setupHoverEffects();
-    this.setupImageLazyLoading();
+    this.setupMediaLazyLoading();
     this.setupModalSetup();
     
     console.log('Projects: Refreshed');
@@ -413,11 +704,19 @@ class Projects {
   destroy() {
     console.log('Projects: Destroying...');
 
-    // Disconnect image observer
-    if (this.imageObserver) {
-      this.imageObserver.disconnect();
-      this.imageObserver = null;
+    // Disconnect media observer
+    if (this.mediaObserver) {
+      this.mediaObserver.disconnect();
+      this.mediaObserver = null;
     }
+
+    // Pause and clean up all videos
+    const videos = this.element.querySelectorAll('video');
+    videos.forEach(video => {
+      video.pause();
+      video.src = '';
+      video.load();
+    });
 
     // Kill all GSAP animations
     this.animations.forEach(anim => {
@@ -431,11 +730,8 @@ class Projects {
     this.projectCards.forEach(card => {
       gsap.set(card, { clearProps: 'all' });
       
-      const image = card.querySelector('.project-card__image');
-      const overlay = card.querySelector('.project-card__overlay');
-      
-      if (image) gsap.set(image, { clearProps: 'all' });
-      if (overlay) gsap.set(overlay, { clearProps: 'all' });
+      const media = card.querySelector('.project__media');
+      if (media) gsap.set(media, { clearProps: 'all' });
     });
 
     // Clear project cards

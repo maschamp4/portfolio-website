@@ -239,6 +239,7 @@ class ScrollAnimations {
 
   /**
    * Hero section animations - fade out on scroll
+   * UPDATED: Faster, smoother transition with no text overlay
    */
   animateHero() {
     const hero = document.getElementById('hero');
@@ -247,20 +248,22 @@ class ScrollAnimations {
     const title = hero.querySelector('.hero__title');
     const subtitle = hero.querySelector('.hero__subtitle');
     const tagline = hero.querySelector('.hero__tagline');
+    const subheadline = hero.querySelector('.hero__subheadline');
     const scrollIndicator = hero.querySelector('.scroll-indicator, .hero__scroll-indicator');
+    const ctaButtons = hero.querySelector('.hero__cta');
 
-    // Hero content parallax and fade
+    // Hero content parallax and fade - MUCH FASTER
     if (title) {
       const trigger = gsap.to(title, {
         scrollTrigger: {
           trigger: hero,
           start: 'top top',
-          end: 'bottom top',
-          scrub: this.settings.timings.parallaxScrub,
+          end: '50% top', // Faster end point
+          scrub: 0.5, // Much faster scrub for immediate response
         },
-        y: -100,
+        y: -150,
         opacity: 0,
-        ease: 'power2.inOut',
+        ease: 'power3.out', // Smoother easing
       });
       this.scrollTriggers.push(trigger);
     }
@@ -270,12 +273,28 @@ class ScrollAnimations {
         scrollTrigger: {
           trigger: hero,
           start: 'top top',
-          end: 'bottom top',
-          scrub: this.settings.timings.parallaxScrub,
+          end: '50% top',
+          scrub: 0.5,
         },
-        y: -50,
+        y: -100,
         opacity: 0,
-        ease: 'power2.inOut',
+        ease: 'power3.out',
+      });
+      this.scrollTriggers.push(trigger);
+    }
+
+    // Subheadline - disappears FIRST (faster animation)
+    if (subheadline) {
+      const trigger = gsap.to(subheadline, {
+        scrollTrigger: {
+          trigger: hero,
+          start: 'top top',
+          end: '30% top', // Earlier end point - disappears faster
+          scrub: 0.3, // Faster scrub for more immediate response
+        },
+        y: -120,
+        opacity: 0,
+        ease: 'power3.out',
       });
       this.scrollTriggers.push(trigger);
     }
@@ -285,27 +304,42 @@ class ScrollAnimations {
         scrollTrigger: {
           trigger: hero,
           start: 'top top',
-          end: 'bottom top',
-          scrub: this.settings.timings.parallaxScrub,
+          end: '50% top',
+          scrub: 0.5,
         },
-        y: -80,
+        y: -100,
         opacity: 0,
-        ease: 'power2.inOut',
+        ease: 'power3.out',
       });
       this.scrollTriggers.push(trigger);
     }
 
-    // Scroll indicator fade
+    if (ctaButtons) {
+      const trigger = gsap.to(ctaButtons, {
+        scrollTrigger: {
+          trigger: hero,
+          start: 'top top',
+          end: '50% top',
+          scrub: 0.5,
+        },
+        y: -80,
+        opacity: 0,
+        ease: 'power3.out',
+      });
+      this.scrollTriggers.push(trigger);
+    }
+
+    // Scroll indicator fade - very fast
     if (scrollIndicator) {
       const trigger = gsap.to(scrollIndicator, {
         scrollTrigger: {
           trigger: hero,
           start: 'top top',
-          end: '30% top',
-          scrub: true,
+          end: '20% top',
+          scrub: 0.3,
         },
         opacity: 0,
-        y: -20,
+        y: -30,
         ease: 'power2.out',
       });
       this.scrollTriggers.push(trigger);

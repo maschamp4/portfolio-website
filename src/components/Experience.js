@@ -1,12 +1,15 @@
 /**
  * Experience Component
- * Timeline visualization and skills display
+ * Modern animated timeline with scroll-triggered effects
  * Reference: COMPONENTS.md lines 423-725
  */
 
 import eventBus from '../utils/EventBus.js';
 import { experience } from '../data/content.js';
 import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 class Experience {
   constructor() {
@@ -18,10 +21,12 @@ class Experience {
       return;
     }
 
-    this.timeline = this.element.querySelector('.timeline') || 
-                    this.element.querySelector('.experience__timeline');
-    this.skillsGrid = this.element.querySelector('.skills-grid') || 
-                      this.element.querySelector('.experience__skills');
+    // Support both class names
+    this.timeline = this.element.querySelector('#experience-timeline') ||
+                    this.element.querySelector('.experience__timeline') ||
+                    this.element.querySelector('.timeline');
+    this.skillsGrid = this.element.querySelector('.experience__skills') ||
+                      this.element.querySelector('.skills-grid');
     this.timelineEntries = [];
     this.skillBars = [];
     
@@ -32,6 +37,7 @@ class Experience {
     
     // Store animations for cleanup
     this.animations = [];
+    this.scrollTriggers = [];
   }
 
   /**
@@ -45,8 +51,8 @@ class Experience {
     this.updateSectionTitle();
     this.renderTimeline();
     this.renderSkills();
-    this.setupTimelineAnimation();
-    this.setupSkillBars();
+    this.setupScrollAnimations();
+    this.setupProgressLine();
     this.setupHoverInteractions();
 
     this.isInitialized = true;
@@ -65,7 +71,7 @@ class Experience {
   }
 
   /**
-   * Render timeline entries from content data
+   * Render timeline entries with modern vertical layout
    */
   renderTimeline() {
     if (!this.timeline) {
@@ -81,52 +87,77 @@ class Experience {
     // Clear existing content
     this.timeline.innerHTML = '';
 
-    // Add timeline line element
+    // Create timeline structure with progress line
+    const timelineWrapper = document.createElement('div');
+    timelineWrapper.className = 'timeline__wrapper';
+
+    // Central line
     const timelineLine = document.createElement('div');
     timelineLine.className = 'timeline__line';
-    this.timeline.appendChild(timelineLine);
+    timelineWrapper.appendChild(timelineLine);
+
+    // Progress line that animates
+    const progressLine = document.createElement('div');
+    progressLine.className = 'timeline__progress';
+    timelineWrapper.appendChild(progressLine);
+
+    // Create container for items
+    const timelineItems = document.createElement('div');
+    timelineItems.className = 'timeline__items';
 
     // Render each timeline entry
     this.experienceData.timeline.forEach((item, index) => {
       const entry = this.createTimelineEntry(item, index);
-      this.timeline.appendChild(entry);
+      timelineItems.appendChild(entry);
     });
 
+    timelineWrapper.appendChild(timelineItems);
+    this.timeline.appendChild(timelineWrapper);
+
     // Store entry references
-    this.timelineEntries = Array.from(this.timeline.querySelectorAll('.timeline__entry'));
+    this.timelineEntries = Array.from(this.timeline.querySelectorAll('.timeline-item'));
+    this.progressLine = progressLine;
+    this.timelineLine = timelineLine;
 
     console.log(`Experience: Rendered ${this.timelineEntries.length} timeline entries`);
   }
 
   /**
-   * Create timeline entry element
+   * Create modern timeline entry element with alternating layout
    * @param {Object} item - Timeline item data
    * @param {number} index - Entry index
    * @returns {HTMLElement} Timeline entry element
    */
   createTimelineEntry(item, index) {
     const entry = document.createElement('div');
-    entry.className = `timeline__entry timeline__entry--${index % 2 === 0 ? 'left' : 'right'}`;
+    entry.className = 'timeline-item';
     entry.setAttribute('data-index', index);
+    
+    // Alternate left/right positioning
+    const side = index % 2 === 0 ? 'left' : 'right';
+    entry.classList.add(`timeline-item--${side}`);
 
     // Build highlights list if available
     let highlightsHTML = '';
     if (item.highlights && item.highlights.length > 0) {
       highlightsHTML = `
-        <ul class="timeline__highlights">
+        <ul class="timeline-item__highlights">
           ${item.highlights.map(highlight => `<li>${highlight}</li>`).join('')}
         </ul>
       `;
     }
 
     entry.innerHTML = `
-      <div class="timeline__marker"></div>
-      <div class="timeline__content">
-        <span class="timeline__year">${item.year}</span>
-        <h4 class="timeline__title">${item.position}</h4>
-        <p class="timeline__company">${item.company}</p>
-        <span class="timeline__type">${item.type || ''}</span>
-        <p class="timeline__description">${item.description}</p>
+      <div class="timeline-item__marker">
+        <div class="timeline-item__marker-inner"></div>
+        <div class="timeline-item__marker-pulse"></div>
+      </div>
+      <div class="timeline-item__content">
+        <span class="timeline-item__year">${item.year}</span>
+        <h3 class="timeline-item__title">${item.title}</h3>
+        <p class="timeline-item__company">${item.company}</p>
+        ${item.type ? `<span class="timeline-item__type">${item.type}</span>` : ''}
+        ${item.description ? `<p class="timeline-item__description">${item.description}</p>` : ''}
         ${highlightsHTML}
       </div>
     `;
@@ -157,14 +188,14 @@ class Experience {
       this.skillsGrid.appendChild(categorySection);
     });
 
-    // Store skill bar references
-    this.skillBars = Array.from(this.skillsGrid.querySelectorAll('.skill-bar'));
+    // Store skill pill references
+    this.skillPills = Array.from(this.skillsGrid.querySelectorAll('.skill-pill'));
 
-    console.log(`Experience: Rendered ${this.skillBars.length} skill bars`);
+    console.log(`Experience: Rendered ${this.skillPills.length} skill pills`);
   }
 
   /**
-   * Create skill category section
+   * Create skill category section with compact pill layout
    * @param {Object} category - Skill category data
    * @returns {HTMLElement} Category section element
    */
@@ -177,111 +208,177 @@ class Experience {
     categoryTitle.textContent = category.category;
     section.appendChild(categoryTitle);
 
-    // Create skill items
+    // Create skills container for pills
+    const skillsContainer = document.createElement('div');
+    skillsContainer.className = 'skills-pills-container';
+
+    // Create skill pills
     category.items.forEach(skill => {
-      const item = this.createSkillItem(skill);
-      section.appendChild(item);
+      const pill = this.createSkillPill(skill);
+      skillsContainer.appendChild(pill);
     });
+
+    section.appendChild(skillsContainer);
 
     return section;
   }
 
   /**
-   * Create skill item element with progress bar
+   * Create compact skill pill element
    * @param {Object} skill - Skill data
-   * @returns {HTMLElement} Skill item element
+   * @returns {HTMLElement} Skill pill element
    */
-  createSkillItem(skill) {
-    const item = document.createElement('div');
-    item.className = 'skill-item';
-    item.setAttribute('data-skill', skill.name);
+  createSkillPill(skill) {
+    const pill = document.createElement('div');
+    pill.className = 'skill-pill';
+    pill.setAttribute('data-skill', skill.name);
 
-    item.innerHTML = `
-      <div class="skill-item__header">
-        <span class="skill-item__name">${skill.name}</span>
-        <span class="skill-item__level">${skill.level}%</span>
-      </div>
-      <div class="skill-item__bar-container">
-        <div class="skill-bar" style="--skill-level: ${skill.level}%; width: 0%;"></div>
-      </div>
+    pill.innerHTML = `
+      <span class="skill-name">${skill.name}</span>
+      <span class="skill-percentage">${skill.level}%</span>
     `;
 
-    return item;
+    return pill;
   }
 
   /**
-   * Set up timeline scroll animations
-   * Note: Main scroll animations are handled by ScrollAnimations.js
-   * This method only sets up component-specific states
+   * Set up scroll-triggered animations for timeline
    */
-  setupTimelineAnimation() {
-    const line = this.timeline?.querySelector('.timeline__line');
-    
-    if (line && !this.prefersReducedMotion) {
-      // Set initial state for GSAP animation
-      gsap.set(line, {
-        scaleY: 0,
-        transformOrigin: 'top',
+  setupScrollAnimations() {
+    if (this.prefersReducedMotion) {
+      // Show everything immediately for reduced motion
+      this.timelineEntries.forEach(entry => {
+        gsap.set(entry, { opacity: 1, x: 0 });
       });
+      return;
     }
 
-    // Set initial state for timeline entries
+    // Set initial states and animate items
     this.timelineEntries.forEach((entry, index) => {
-      if (this.prefersReducedMotion) {
-        gsap.set(entry, { opacity: 1, x: 0 });
-        return;
-      }
+      const side = index % 2 === 0 ? 'left' : 'right';
+      const direction = side === 'left' ? -80 : 80;
 
-      // Set initial state for GSAP animations
-      const direction = index % 2 === 0 ? -50 : 50;
+      // Set initial state
       gsap.set(entry, {
         opacity: 0,
         x: direction,
       });
+
+      // Animate on scroll
+      const trigger = gsap.to(entry, {
+        scrollTrigger: {
+          trigger: entry,
+          start: 'top 85%',
+          end: 'top 60%',
+          toggleActions: 'play none none reverse',
+          markers: false,
+        },
+        opacity: 1,
+        x: 0,
+        duration: 0.8,
+        delay: index * 0.1,
+        ease: 'power3.out',
+      });
+
+      this.scrollTriggers.push(trigger.scrollTrigger);
+
+      // Marker pulse animation when visible
+      const marker = entry.querySelector('.timeline-item__marker-pulse');
+      if (marker) {
+        gsap.to(marker, {
+          scrollTrigger: {
+            trigger: entry,
+            start: 'top 80%',
+            toggleActions: 'play none none reverse',
+          },
+          scale: 1.5,
+          opacity: 0,
+          duration: 1.5,
+          repeat: -1,
+          ease: 'power2.out',
+        });
+      }
+    });
+
+    // Animate skill pills
+    this.skillPills.forEach((pill, index) => {
+      gsap.set(pill, {
+        opacity: 0,
+        y: 20,
+        scale: 0.9
+      });
+
+      const trigger = gsap.to(pill, {
+        scrollTrigger: {
+          trigger: pill,
+          start: 'top 85%',
+          toggleActions: 'play none none reverse',
+        },
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        duration: 0.6,
+        delay: index * 0.05,
+        ease: 'power3.out',
+      });
+
+      this.scrollTriggers.push(trigger.scrollTrigger);
     });
   }
 
   /**
-   * Set up skill bar animations
-   * Note: Main scroll animations are handled by ScrollAnimations.js
-   * This method only sets up component-specific states
+   * Setup progressive line animation that follows scroll
    */
-  setupSkillBars() {
-    this.skillBars.forEach((bar, index) => {
-      if (this.prefersReducedMotion) {
-        // Show bars immediately for reduced motion
-        const skillLevel = bar.style.getPropertyValue('--skill-level');
-        bar.style.width = skillLevel;
-        return;
-      }
+  setupProgressLine() {
+    if (this.prefersReducedMotion || !this.progressLine || !this.timelineLine) {
+      return;
+    }
 
-      // Set initial state for GSAP animations
-      gsap.set(bar, {
-        width: '0%',
-      });
+    // Set initial state - line starts from top
+    gsap.set(this.progressLine, {
+      scaleY: 0,
+      transformOrigin: 'top center',
     });
+
+    // Animate line based on timeline scroll progress
+    const trigger = gsap.to(this.progressLine, {
+      scrollTrigger: {
+        trigger: this.timeline,
+        start: 'top 70%',
+        end: 'bottom 30%',
+        scrub: 1,
+        markers: false,
+      },
+      scaleY: 1,
+      ease: 'none',
+    });
+
+    this.scrollTriggers.push(trigger.scrollTrigger);
   }
 
   /**
    * Set up hover interactions for timeline and skills
-   * Uses GSAP for smooth hover animations
    */
   setupHoverInteractions() {
-    // Timeline entry hover effects with GSAP
+    // Timeline entry hover effects
     this.timelineEntries.forEach(entry => {
+      const content = entry.querySelector('.timeline-item__content');
+      const marker = entry.querySelector('.timeline-item__marker');
+
       entry.addEventListener('mouseenter', () => {
         if (this.prefersReducedMotion) return;
 
-        gsap.to(entry, {
-          scale: 1.02,
+        gsap.to(content, {
+          y: -8,
+          boxShadow: '0 20px 60px rgba(6, 182, 212, 0.3)',
           duration: 0.3,
           ease: 'power2.out',
         });
         
-        const marker = entry.querySelector('.timeline__marker');
         if (marker) {
-          gsap.to(marker, {
-            scale: 1.5,
+          gsap.to(marker.querySelector('.timeline-item__marker-inner'), {
+            scale: 1.3,
+            boxShadow: '0 0 30px rgba(6, 182, 212, 0.8)',
             duration: 0.3,
             ease: 'power2.out',
           });
@@ -295,16 +392,17 @@ class Experience {
       entry.addEventListener('mouseleave', () => {
         if (this.prefersReducedMotion) return;
 
-        gsap.to(entry, {
-          scale: 1,
+        gsap.to(content, {
+          y: 0,
+          boxShadow: '0 10px 30px rgba(0, 0, 0, 0.2)',
           duration: 0.3,
           ease: 'power2.out',
         });
         
-        const marker = entry.querySelector('.timeline__marker');
         if (marker) {
-          gsap.to(marker, {
+          gsap.to(marker.querySelector('.timeline-item__marker-inner'), {
             scale: 1,
+            boxShadow: '0 0 20px rgba(6, 182, 212, 0.4)',
             duration: 0.3,
             ease: 'power2.out',
           });
@@ -312,49 +410,31 @@ class Experience {
       });
     });
 
-    // Skill item hover effects with GSAP
-    const skillItems = this.skillsGrid?.querySelectorAll('.skill-item');
-    skillItems?.forEach(item => {
-      item.addEventListener('mouseenter', () => {
+    // Skill pill hover effects
+    const skillPills = this.skillsGrid?.querySelectorAll('.skill-pill');
+    skillPills?.forEach(pill => {
+      pill.addEventListener('mouseenter', () => {
         if (this.prefersReducedMotion) return;
 
-        gsap.to(item, {
-          x: 5,
+        gsap.to(pill, {
+          scale: 1.05,
           duration: 0.3,
           ease: 'power2.out',
         });
-        
-        const bar = item.querySelector('.skill-bar');
-        if (bar) {
-          gsap.to(bar, {
-            scaleY: 1.2,
-            duration: 0.3,
-            ease: 'power2.out',
-          });
-        }
 
         eventBus.emit('skill:hover', {
-          skill: item.dataset.skill
+          skill: pill.dataset.skill
         });
       });
 
-      item.addEventListener('mouseleave', () => {
+      pill.addEventListener('mouseleave', () => {
         if (this.prefersReducedMotion) return;
 
-        gsap.to(item, {
-          x: 0,
+        gsap.to(pill, {
+          scale: 1,
           duration: 0.3,
           ease: 'power2.out',
         });
-        
-        const bar = item.querySelector('.skill-bar');
-        if (bar) {
-          gsap.to(bar, {
-            scaleY: 1,
-            duration: 0.3,
-            ease: 'power2.out',
-          });
-        }
       });
     });
   }
@@ -390,10 +470,16 @@ class Experience {
    * Refresh component (for dynamic updates)
    */
   refresh() {
+    // Kill existing scroll triggers
+    this.scrollTriggers.forEach(trigger => {
+      if (trigger) trigger.kill();
+    });
+    this.scrollTriggers = [];
+
     this.renderTimeline();
     this.renderSkills();
-    this.setupTimelineAnimation();
-    this.setupSkillBars();
+    this.setupScrollAnimations();
+    this.setupProgressLine();
     this.setupHoverInteractions();
     
     console.log('Experience: Refreshed');
@@ -413,30 +499,28 @@ class Experience {
     });
     this.animations = [];
 
-    // Reset GSAP transforms on timeline elements
-    const line = this.timeline?.querySelector('.timeline__line');
-    if (line) gsap.set(line, { clearProps: 'all' });
+    // Kill all ScrollTriggers
+    this.scrollTriggers.forEach(trigger => {
+      if (trigger) trigger.kill();
+    });
+    this.scrollTriggers = [];
 
+    // Reset GSAP transforms
     this.timelineEntries.forEach(entry => {
       gsap.set(entry, { clearProps: 'all' });
       
-      const marker = entry.querySelector('.timeline__marker');
+      const marker = entry.querySelector('.timeline-item__marker');
       if (marker) gsap.set(marker, { clearProps: 'all' });
     });
 
-    // Reset skill bars
-    this.skillBars.forEach(bar => {
-      gsap.set(bar, { clearProps: 'all' });
-    });
-
-    const skillItems = this.skillsGrid?.querySelectorAll('.skill-item');
-    skillItems?.forEach(item => {
-      gsap.set(item, { clearProps: 'all' });
+    // Reset skill pills
+    this.skillPills.forEach(pill => {
+      gsap.set(pill, { clearProps: 'all' });
     });
 
     // Clear references
     this.timelineEntries = [];
-    this.skillBars = [];
+    this.skillPills = [];
 
     console.log('Experience: Destroyed');
   }

@@ -20,13 +20,14 @@ class Hero {
 
     this.tagline = this.element.querySelector('.hero__tagline');
     this.title = this.element.querySelector('.hero__title');
+    this.titleLines = Array.from(this.element.querySelectorAll('.hero__title-line'));
     this.subtitle = this.element.querySelector('.hero__subtitle');
-    this.ctaButtons = Array.from(this.element.querySelectorAll('.hero__cta, .btn'));
-    this.scrollIndicator = this.element.querySelector('.scroll-indicator');
+    this.ctaButtons = Array.from(this.element.querySelectorAll('.hero__cta .btn'));
+    this.scrollIndicator = this.element.querySelector('.hero__scroll-indicator') ||
+                           this.element.querySelector('.scroll-indicator');
     
     // State
     this.isAnimated = false;
-    this.titleChars = [];
     this.animations = []; // Store GSAP animations for cleanup
     this.prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   }
@@ -39,59 +40,64 @@ class Hero {
 
     console.log('Hero: Initializing...');
 
+    this.updateContent();
     this.setupTextAnimations();
     this.setupScrollIndicator();
     this.setupCTAButtons();
     this.setupParallaxEffect();
+    this.setupCursorInteraction();
 
     console.log('Hero: Initialized successfully');
   }
 
   /**
-   * Set up text animations
-   * Splits text into characters/words for sequential animation
+   * Update content from data (if needed)
    */
-  setupTextAnimations() {
-    // Animate tagline
-    if (this.tagline && hero.tagline) {
+  updateContent() {
+    // Update tagline if content data differs from HTML
+    if (this.tagline && hero.tagline && this.tagline.textContent.trim() !== hero.tagline) {
       this.tagline.textContent = hero.tagline;
-      this.animateTagline();
     }
 
-    // Animate title
-    if (this.title) {
-      this.prepareTitle();
-      this.animateTitle();
+    // Update title lines if content data differs from HTML
+    if (this.titleLines.length > 0 && hero.title && Array.isArray(hero.title)) {
+      hero.title.forEach((line, index) => {
+        if (this.titleLines[index] && this.titleLines[index].textContent.trim() !== line) {
+          this.titleLines[index].textContent = line;
+        }
+      });
     }
 
-    // Animate subtitle
-    if (this.subtitle && hero.subtitle) {
+    // Update subtitle if content data differs from HTML
+    if (this.subtitle && hero.subtitle && this.subtitle.textContent.trim() !== hero.subtitle) {
       this.subtitle.textContent = hero.subtitle;
-      this.animateSubtitle();
     }
   }
 
   /**
-   * Prepare title for character-by-character animation
+   * Set up text animations
+   * Animates title lines, tagline, and subtitle
    */
-  prepareTitle() {
-    if (!this.title) return;
+  setupTextAnimations() {
+    // Animate tagline
+    if (this.tagline) {
+      this.animateTagline();
+    }
 
-    // Get title from content data or existing text
-    const titleText = hero.title ? hero.title.join(' - ') : this.title.textContent;
-    
-    // Split into characters
-    const chars = titleText.split('');
-    
-    // Wrap each character in span for animation
-    this.title.innerHTML = chars.map((char, index) => {
-      const className = char === ' ' ? 'char char--space' : 'char';
-      const content = char === ' ' ? '&nbsp;' : char;
-      return `<span class="${className}" data-char="${index}">${content}</span>`;
-    }).join('');
+    // Animate title lines
+    if (this.titleLines.length > 0) {
+      this.animateTitleLines();
+    }
 
-    // Store character elements for animation
-    this.titleChars = Array.from(this.title.querySelectorAll('.char'));
+    // Animate subtitle
+    if (this.subtitle) {
+      this.animateSubtitle();
+    }
+
+    // Animate CTA buttons
+    if (this.ctaButtons.length > 0) {
+      this.animateCTAButtons();
+    }
   }
 
   /**
@@ -119,26 +125,25 @@ class Hero {
   }
 
   /**
-   * Animate title characters sequentially
-   * Character-by-character reveal with GSAP stagger
+   * Animate title lines sequentially
+   * Uses GSAP stagger for line-by-line reveal
    */
-  animateTitle() {
-    if (this.titleChars.length === 0) return;
+  animateTitleLines() {
+    if (this.titleLines.length === 0) return;
 
     if (this.prefersReducedMotion) {
       // Simple instant display for reduced motion
-      gsap.set(this.titleChars, { opacity: 1, y: 0, rotationX: 0 });
+      gsap.set(this.titleLines, { opacity: 1, y: 0 });
       this.isAnimated = true;
       eventBus.emit('hero:animated');
       return;
     }
 
-    const anim = gsap.from(this.titleChars, {
+    const anim = gsap.from(this.titleLines, {
       opacity: 0,
-      y: 50,
-      rotationX: -90,
-      stagger: 0.05,
-      duration: 1.5,
+      y: 100,
+      stagger: 0.2,
+      duration: 1.2,
       delay: 0.6,
       ease: 'power3.out',
       onComplete: () => {
@@ -167,6 +172,31 @@ class Hero {
       opacity: 0,
       y: 20,
       duration: 0.8,
+      delay: 1.2,
+      ease: 'power2.out',
+    });
+    
+    this.animations.push(anim);
+  }
+
+  /**
+   * Animate CTA buttons
+   * Uses GSAP for smooth fade-in animation with stagger
+   */
+  animateCTAButtons() {
+    if (this.ctaButtons.length === 0) return;
+
+    if (this.prefersReducedMotion) {
+      // Simple instant display for reduced motion
+      gsap.set(this.ctaButtons, { opacity: 1, y: 0 });
+      return;
+    }
+
+    const anim = gsap.from(this.ctaButtons, {
+      opacity: 0,
+      y: 20,
+      stagger: 0.1,
+      duration: 0.6,
       delay: 1.5,
       ease: 'power2.out',
     });
@@ -231,13 +261,30 @@ class Hero {
 
   /**
    * Set up CTA button interactions
-   * Note: Magnetic effects are now handled globally in main.js
    */
   setupCTAButtons() {
     this.ctaButtons.forEach(button => {
       // Click tracking
       button.addEventListener('click', (e) => {
         const href = button.getAttribute('href');
+        
+        // If it's an anchor link, handle smooth scroll
+        if (href && href.startsWith('#')) {
+          e.preventDefault();
+          const target = document.querySelector(href);
+          
+          if (target) {
+            const offset = 80;
+            const elementPosition = target.getBoundingClientRect().top + window.scrollY;
+            const offsetPosition = elementPosition - offset;
+
+            window.scrollTo({
+              top: offsetPosition,
+              behavior: 'smooth'
+            });
+          }
+        }
+        
         eventBus.emit('hero:cta-clicked', {
           href,
           text: button.textContent.trim()
@@ -250,9 +297,10 @@ class Hero {
 
   /**
    * Set up parallax effect for hero content
-   * Placeholder for scroll-based parallax
    */
   setupParallaxEffect() {
+    if (this.prefersReducedMotion) return;
+
     let ticking = false;
 
     window.addEventListener('scroll', () => {
@@ -302,25 +350,98 @@ class Hero {
   }
 
   /**
+   * Set up modern magnetic cursor interaction
+   * Letters repel from cursor with spring physics
+   */
+  setupCursorInteraction() {
+    if (!this.title || this.titleLines.length === 0) return;
+    if (this.prefersReducedMotion) return;
+
+    // Store original text for each line
+    this.originalText = this.titleLines.map(line => line.textContent);
+
+    // Split text into individual letters
+    this.titleLines.forEach((line, lineIndex) => {
+      const text = this.originalText[lineIndex];
+      line.innerHTML = text.split('').map(char =>
+        char === ' ' ? '&nbsp;' : `<span class="hero__title-letter">${char}</span>`
+      ).join('');
+    });
+
+    // Get all letter elements
+    const letters = document.querySelectorAll('.hero__title-letter');
+    
+    // Magnetic repulsion effect on mouse move
+    const handleMouseMove = (e) => {
+      letters.forEach(letter => {
+        const rect = letter.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+        
+        // Calculate distance from cursor
+        const deltaX = e.clientX - centerX;
+        const deltaY = e.clientY - centerY;
+        const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+        
+        // Magnetic effect radius (150px)
+        const maxDistance = 150;
+        
+        if (distance < maxDistance) {
+          // Calculate repulsion strength (inverse of distance)
+          const strength = (maxDistance - distance) / maxDistance;
+          // Apply repulsion in opposite direction from cursor
+          const moveX = -deltaX * strength * 0.3;
+          const moveY = -deltaY * strength * 0.3;
+          
+          letter.style.transform = `translate(${moveX}px, ${moveY}px)`;
+        } else {
+          // Reset to original position
+          letter.style.transform = 'translate(0, 0)';
+        }
+      });
+    };
+
+    // Reset all letters on mouse leave
+    const handleMouseLeave = () => {
+      letters.forEach(letter => {
+        letter.style.transform = 'translate(0, 0)';
+      });
+    };
+
+    // Attach event listeners to document for smooth tracking
+    document.addEventListener('mousemove', handleMouseMove);
+    this.title.addEventListener('mouseleave', handleMouseLeave);
+
+    // Store references for cleanup
+    this.magneticHandlers = {
+      mousemove: handleMouseMove,
+      mouseleave: handleMouseLeave
+    };
+
+    console.log('Hero: Magnetic cursor interaction setup complete');
+  }
+
+  /**
    * Reset animations (for testing/debugging)
    */
   resetAnimations() {
     this.isAnimated = false;
     
     if (this.tagline) {
-      this.tagline.style.opacity = '0';
-      this.tagline.style.transform = 'translateY(30px)';
+      gsap.set(this.tagline, { opacity: 0, y: 30 });
     }
 
-    this.titleChars.forEach(char => {
-      char.style.opacity = '0';
-      char.style.transform = 'translateY(50px) rotateX(-90deg)';
+    this.titleLines.forEach(line => {
+      gsap.set(line, { opacity: 0, y: 100 });
     });
 
     if (this.subtitle) {
-      this.subtitle.style.opacity = '0';
-      this.subtitle.style.transform = 'translateY(20px)';
+      gsap.set(this.subtitle, { opacity: 0, y: 20 });
     }
+
+    this.ctaButtons.forEach(button => {
+      gsap.set(button, { opacity: 0, y: 20 });
+    });
 
     console.log('Hero: Animations reset');
   }
@@ -330,8 +451,9 @@ class Hero {
    */
   playAnimations() {
     this.animateTagline();
-    this.animateTitle();
+    this.animateTitleLines();
     this.animateSubtitle();
+    this.animateCTAButtons();
   }
 
   /**
@@ -348,11 +470,22 @@ class Hero {
     });
     this.animations = [];
 
+    // Remove magnetic effect event listeners
+    if (this.magneticHandlers) {
+      document.removeEventListener('mousemove', this.magneticHandlers.mousemove);
+      if (this.title) {
+        this.title.removeEventListener('mouseleave', this.magneticHandlers.mouseleave);
+      }
+      this.magneticHandlers = null;
+    }
+
     // Reset GSAP transforms
     if (this.tagline) gsap.set(this.tagline, { clearProps: 'all' });
     if (this.subtitle) gsap.set(this.subtitle, { clearProps: 'all' });
     if (this.scrollIndicator) gsap.set(this.scrollIndicator, { clearProps: 'all' });
-    this.titleChars.forEach(char => gsap.set(char, { clearProps: 'all' }));
+    
+    this.titleLines.forEach(line => gsap.set(line, { clearProps: 'all' }));
+    this.ctaButtons.forEach(button => gsap.set(button, { clearProps: 'all' }));
 
     console.log('Hero: Destroyed');
   }

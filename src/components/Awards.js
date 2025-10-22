@@ -17,12 +17,14 @@ class Awards {
       return;
     }
 
-    this.grid = this.element.querySelector('.awards-grid') || 
-                this.element.querySelector('.awards__grid');
+    // Support both #awards-grid and class selectors
+    this.grid = this.element.querySelector('#awards-grid') ||
+                this.element.querySelector('.awards__grid') ||
+                this.element.querySelector('.awards-grid');
     this.awardCards = [];
     
     // State
-    this.awards = awards;
+    this.awardsData = awards;
     this.isInitialized = false;
     this.currentFilter = 'all';
   }
@@ -50,9 +52,9 @@ class Awards {
    */
   updateSectionTitle() {
     const titleElement = this.element.querySelector('.section__title');
-    if (titleElement && this.awards.title) {
-      titleElement.textContent = this.awards.title;
-      console.log('Awards: Updated section title to:', this.awards.title);
+    if (titleElement && this.awardsData.title) {
+      titleElement.textContent = this.awardsData.title;
+      console.log('Awards: Updated section title to:', this.awardsData.title);
     }
   }
 
@@ -65,7 +67,7 @@ class Awards {
       return;
     }
 
-    if (!this.awards || this.awards.length === 0) {
+    if (!this.awardsData.items || this.awardsData.items.length === 0) {
       console.warn('Awards: No awards data found');
       return;
     }
@@ -75,8 +77,8 @@ class Awards {
 
     // Filter awards if needed
     const filteredAwards = this.currentFilter === 'all' 
-      ? this.awards 
-      : this.awards.filter(award => award.category === this.currentFilter);
+      ? this.awardsData.items
+      : this.awardsData.items.filter(award => award.category === this.currentFilter);
 
     // Render each award card
     filteredAwards.forEach((award, index) => {
@@ -91,7 +93,7 @@ class Awards {
   }
 
   /**
-   * Create award card element
+   * Create award card element with proper structure
    * @param {Object} award - Award data object
    * @param {number} index - Award index
    * @returns {HTMLElement} Award card element
@@ -99,20 +101,25 @@ class Awards {
   createAwardCard(award, index) {
     const card = document.createElement('div');
     card.className = 'award-card';
-    card.setAttribute('data-award-id', award.id);
+    card.setAttribute('data-award-id', award.title || `award-${index}`);
     card.setAttribute('data-index', index);
-    card.setAttribute('data-category', award.category);
+    card.setAttribute('data-category', award.category || '');
+
+    // Determine icon (use logo if available, otherwise default emoji)
+    const iconHTML = award.logo 
+      ? `<img src="${award.logo}" alt="${award.organization || award.title}" loading="lazy" />`
+      : '🏆';
 
     card.innerHTML = `
-      <div class="award-card__icon">
-        ${award.logo ? `<img src="${award.logo}" alt="${award.organization}" loading="lazy" />` : '🏆'}
+      <div class="award-icon">
+        ${iconHTML}
       </div>
-      <h4 class="award-card__title">${award.title}</h4>
-      <p class="award-card__category">${award.category}</p>
-      <p class="award-card__organization">${award.organization}</p>
-      <span class="award-card__year">${award.year}</span>
-      ${award.description ? `<p class="award-card__description">${award.description}</p>` : ''}
-      ${award.project ? `<span class="award-card__project">Project: ${award.project}</span>` : ''}
+      <div class="award-content">
+        <h3 class="award-title">${award.title}</h3>
+        <p class="award-category">${award.category}</p>
+        <span class="award-year">${award.year}</span>
+        ${award.description ? `<p class="award-description">${award.description}</p>` : ''}
+      </div>
     `;
 
     return card;
@@ -120,7 +127,7 @@ class Awards {
 
   /**
    * Set up scroll-triggered animations for award cards
-   * Placeholder for GSAP ScrollTrigger animations
+   * Uses Intersection Observer for stagger animation
    */
   setupAnimations() {
     // Simple stagger animation using Intersection Observer
@@ -163,21 +170,6 @@ class Awards {
       `;
       document.head.appendChild(style);
     }
-
-    // TODO: Replace with GSAP animation
-    // gsap.from(this.awardCards, {
-    //   scrollTrigger: {
-    //     trigger: this.grid,
-    //     start: 'top 75%',
-    //     toggleActions: 'play none none reverse',
-    //   },
-    //   opacity: 0,
-    //   y: 50,
-    //   scale: 0.9,
-    //   stagger: 0.08,
-    //   duration: 0.8,
-    //   ease: 'back.out(1.5)',
-    // });
   }
 
   /**
@@ -192,7 +184,7 @@ class Awards {
         card.style.boxShadow = '0 20px 60px rgba(255, 255, 255, 0.15)';
 
         // Pulse icon
-        const icon = card.querySelector('.award-card__icon');
+        const icon = card.querySelector('.award-icon');
         if (icon) {
           icon.style.transition = 'transform 0.4s ease';
           icon.style.transform = 'scale(1.1) rotate(5deg)';
@@ -209,7 +201,7 @@ class Awards {
         card.style.transform = isVisible ? 'translateY(0) scale(1)' : card.style.transform;
         card.style.boxShadow = '0 10px 30px rgba(255, 255, 255, 0.05)';
 
-        const icon = card.querySelector('.award-card__icon');
+        const icon = card.querySelector('.award-icon');
         if (icon) {
           icon.style.transform = 'scale(1) rotate(0deg)';
         }
@@ -218,24 +210,15 @@ class Awards {
       // Click to emit event
       card.addEventListener('click', () => {
         const awardId = card.dataset.awardId;
-        const award = this.awards.find(a => a.id === awardId);
+        const award = this.awardsData.items.find(a => 
+          (a.title || `award-${card.dataset.index}`) === awardId
+        );
         
         if (award) {
           eventBus.emit('award:clicked', { award });
           console.log('Awards: Card clicked', award.title);
         }
       });
-
-      // TODO: Replace with GSAP animations
-      // card.addEventListener('mouseenter', () => {
-      //   gsap.to(card, {
-      //     y: -10,
-      //     scale: 1.02,
-      //     boxShadow: '0 20px 60px rgba(255,255,255,0.15)',
-      //     duration: 0.4,
-      //     ease: 'power2.out',
-      //   });
-      // });
     });
   }
 
@@ -286,7 +269,7 @@ class Awards {
    * @returns {Object|null} Award data or null
    */
   getAwardById(id) {
-    return this.awards.find(award => award.id === id) || null;
+    return this.awardsData.items.find(award => award.title === id) || null;
   }
 
   /**
@@ -295,7 +278,7 @@ class Awards {
    * @returns {Array} Filtered awards
    */
   getAwardsByCategory(category) {
-    return this.awards.filter(award => award.category === category);
+    return this.awardsData.items.filter(award => award.category === category);
   }
 
   /**
@@ -304,7 +287,7 @@ class Awards {
    * @returns {Array} Filtered awards
    */
   getAwardsByYear(year) {
-    return this.awards.filter(award => award.year === String(year));
+    return this.awardsData.items.filter(award => award.year === String(year));
   }
 
   /**
@@ -336,7 +319,7 @@ class Awards {
    * @returns {Array} Array of unique categories
    */
   getCategories() {
-    const categories = new Set(this.awards.map(award => award.category));
+    const categories = new Set(this.awardsData.items.map(award => award.category));
     return ['all', ...Array.from(categories)];
   }
 
@@ -346,10 +329,10 @@ class Awards {
    */
   getStats() {
     return {
-      total: this.awards.length,
+      total: this.awardsData.items.length,
       categories: this.getCategories().length - 1, // Exclude 'all'
-      years: new Set(this.awards.map(a => a.year)).size,
-      latestYear: Math.max(...this.awards.map(a => parseInt(a.year)))
+      years: new Set(this.awardsData.items.map(a => a.year)).size,
+      latestYear: Math.max(...this.awardsData.items.map(a => parseInt(a.year)))
     };
   }
 

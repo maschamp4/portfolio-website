@@ -169,8 +169,16 @@ export default class MorphingShape {
    * Setup camera - FIXED position, no scroll movement
    */
   setupCamera() {
-    const aspect = this.canvas.clientWidth / this.canvas.clientHeight;
-    console.log('Setting up camera with aspect ratio:', aspect);
+    const width = this.canvas.clientWidth || window.innerWidth;
+    const height = this.canvas.clientHeight || window.innerHeight;
+    const aspect = width / height;
+    
+    console.log('Setting up camera with dimensions:', { width, height, aspect });
+    
+    // Validate aspect ratio
+    if (!isFinite(aspect) || aspect <= 0) {
+      throw new Error(`Invalid aspect ratio: ${aspect}. Canvas dimensions: ${width}x${height}`);
+    }
     
     this.camera = new THREE.PerspectiveCamera(
       75,      // FOV
@@ -197,6 +205,22 @@ export default class MorphingShape {
       pixelRatio: this.pixelRatio
     });
     
+    // Ensure canvas has valid dimensions
+    let width = this.canvas.clientWidth || window.innerWidth;
+    let height = this.canvas.clientHeight || window.innerHeight;
+    
+    console.log('Canvas dimensions:', {
+      clientWidth: this.canvas.clientWidth,
+      clientHeight: this.canvas.clientHeight,
+      fallbackWidth: width,
+      fallbackHeight: height
+    });
+    
+    // If dimensions are still invalid, throw a descriptive error
+    if (width === 0 || height === 0) {
+      throw new Error(`Invalid canvas dimensions: ${width}x${height}. Canvas must have non-zero dimensions.`);
+    }
+    
     this.renderer = new THREE.WebGLRenderer({
       canvas: this.canvas,
       antialias: true,
@@ -205,8 +229,6 @@ export default class MorphingShape {
       precision: 'highp'
     });
     
-    const width = this.canvas.clientWidth;
-    const height = this.canvas.clientHeight;
     console.log('Setting renderer size to:', width, 'x', height);
     this.renderer.setSize(width, height);
     this.renderer.setPixelRatio(this.pixelRatio);
@@ -423,8 +445,11 @@ export default class MorphingShape {
     
     this.isMobile = window.innerWidth < 768;
     
-    const width = this.canvas.clientWidth;
-    const height = this.canvas.clientHeight;
+    // Use fallback dimensions if canvas dimensions are invalid
+    const width = this.canvas.clientWidth || window.innerWidth;
+    const height = this.canvas.clientHeight || window.innerHeight;
+    
+    console.log('Resizing Three.js scene to:', width, 'x', height);
     
     this.camera.aspect = width / height;
     this.camera.updateProjectionMatrix();
