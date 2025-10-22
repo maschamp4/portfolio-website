@@ -10,6 +10,8 @@
 html {
   font-size: 16px;
   scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  overflow-y: auto;
 }
 
 body {
@@ -20,6 +22,17 @@ body {
   color: var(--text-primary);
   background-color: var(--bg-primary);
   overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
+  position: relative;
+}
+
+/* Ensure scrolling works on all devices */
+html,
+body {
+  height: auto;
+  min-height: 100%;
 }
 
 /* Three.js canvas background */
@@ -31,6 +44,14 @@ body {
   height: 100%;
   z-index: var(--z-three-canvas);
   pointer-events: none;
+  touch-action: none;
+}
+
+/* Ensure main content is scrollable */
+main {
+  position: relative;
+  z-index: 1;
+  touch-action: pan-y;
 }
 
 /* ==========================================================================
