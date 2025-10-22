@@ -8,7 +8,7 @@
  */
 export const hero = {
   title: ["VISUAL", "ARTIST", "CREATIVE", "TECHNOLO", "GIST"],
-  subtitle: "Crafting the Future of Cinematic Storytelling."
+  subtitle: ""
 };
 
 /**
