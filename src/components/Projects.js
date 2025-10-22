@@ -146,22 +146,46 @@ class Projects {
   createMediaSection(project) {
     // Check if project has video
     if (project.video) {
-      return `
-        <div class="project__media">
-          <video 
-            class="project__video" 
-            data-src="${project.video}"
-            autoplay 
-            muted 
-            loop 
-            playsinline
-            aria-label="${project.title} video"
-          >
-            <source data-src="${project.video}" type="video/mp4">
-            Your browser does not support the video tag.
-          </video>
-        </div>
-      `;
+      // Check if it's a Vimeo or YouTube embed URL
+      const isVimeo = project.video.includes('vimeo.com');
+      const isYouTube = project.video.includes('youtube.com') || project.video.includes('youtu.be');
+      
+      if (isVimeo || isYouTube) {
+        // Use iframe for video hosting platforms
+        return `
+          <div class="project__media">
+            <div class="project__video-wrapper">
+              <iframe
+                class="project__video-iframe"
+                src="${project.video}"
+                frameborder="0"
+                allow="autoplay; fullscreen; picture-in-picture"
+                allowfullscreen
+                loading="lazy"
+                title="${project.title} video"
+              ></iframe>
+            </div>
+          </div>
+        `;
+      } else {
+        // Use HTML5 video for local/direct video files
+        return `
+          <div class="project__media">
+            <video
+              class="project__video"
+              data-src="${project.video}"
+              autoplay
+              muted
+              loop
+              playsinline
+              aria-label="${project.title} video"
+            >
+              <source data-src="${project.video}" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+          </div>
+        `;
+      }
     }
     
     // Check if project has image gallery
