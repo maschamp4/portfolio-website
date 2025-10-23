@@ -221,10 +221,8 @@ class Experience {
     card.setAttribute('data-index', index);
 
     card.innerHTML = `
-      <div class="craft-card__number">${String(index + 1).padStart(2, '0')}</div>
       <h4 class="craft-card__title">${item.title}</h4>
       <p class="craft-card__description">${item.description}</p>
-      <div class="craft-card__glow"></div>
     `;
 
     return card;

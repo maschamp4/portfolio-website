@@ -87,23 +87,23 @@ export const projects = [
   {
     id: "ai-hybrid-campaigns",
     title: "Numerous AI and Hybrid Campaigns",
-    client: "Porsche, VW, Burger King, MAN and others",
-    year: "2023-2025",
+    client: "Porsche, VW, MAN, Burger King, Liebherr and others",
+    year: "2023-2024",
     category: "Multiple Campaigns",
     role: "AI Director / Creative Technologist",
     shortDescription: "Role: AI Director / Creative Technologist",
     description: "A collection of cutting-edge campaigns combining AI-generated content with traditional production methods, pushing the boundaries of what's possible in commercial visual storytelling.",
     images: {
-      hero: "/images/AI and Hybrid campaigns_1.png",
+      hero: "/images/1.png",
       gallery: [
-        "/images/AI and Hybrid campaigns_2.png",
-        "/images/AI and Hybrid campaigns_3.avif",
-        "/images/AI and Hybrid campaigns_4.avif",
-        "/images/AI and Hybrid campaigns_5.jpeg",
-        "/images/AI and Hybrid campaigns_8.png",
-        "/images/AI and Hybrid campaigns_9.jpg",
-        "/images/AI and Hybrid campaigns_10.jpg",
-        "/images/AI and Hybrid campaigns_11.jpg"
+        "/images/2.png",
+        "/images/3.png",
+        "/images/4.png",
+        "/images/5.png",
+        "/images/6.png",
+        "/images/7.png",
+        "/images/8.png",
+        "/images/9.png"
       ]
     },
     technologies: ["AI Generation", "Art Direction", "Hybrid Workflows", "Inpainting", "Coherent product"],
@@ -155,24 +155,28 @@ export const experience = {
   ],
   craft: [
     {
-      title: "Generative Concept & Creation",
-      description: "From the initial spark of an idea to a fully realized synthetic world, I create the unseeable."
+      title: "Concept & Creation",
+      description: "I bring entire synthetic worlds to life, from the first visual concept to the final frame."
     },
     {
       title: "Cinematic Direction & Motion",
-      description: "I direct the camera and choreograph movement to tell a compelling story and evoke emotion."
+      description: "I direct the camera and choreograph movement within both real and synthetic spaces to tell a compelling story and evoke emotion."
     },
     {
       title: "Visual Art Direction",
-      description: "I establish the complete visual language of a project, from color and composition to mood and tone."
+      description: "Defining the complete visual language of a project, from color and composition to mood and tone."
     },
     {
       title: "Seamless Integration & Photorealism",
-      description: "Using advanced inpainting and temporal coherence, I ensure every element feels tangible and real."
+      description: "I employ advanced inpainting and temporal coherence to ensure every synthetic element feels tangible and physically present."
     },
     {
       title: "High-Fidelity Finishing",
       description: "I employ cutting-edge upscaling techniques to polish every frame to a pristine, cinematic standard."
+    },
+    {
+      title: "R&D / Pioneering Techniques",
+      description: "Pioneering new visual approaches by staying at the absolute forefront of emerging technology, ensuring every project has a unique creative edge."
     }
   ],
   skills: [
@@ -267,7 +271,7 @@ export const contact = {
   email: "m.sheludiakova@gmail.com",
   socialMedia: {
     linkedin: "https://www.linkedin.com/in/mascha-sheludiakova/",
-    instagram: "https://instagram.com/mascha.visuals",
+    instagram: "https://www.instagram.com/mascha.mp4/",
     vimeo: "https://vimeo.com/mascha",
     twitter: "https://twitter.com/mascha_tech",
     github: "https://github.com/mascha-creative"
