@@ -191,7 +191,8 @@ export const experience = {
         { name: "photoshop", level: 95 },
         { name: "after effects", level: 95 },
         { name: "unreal engine", level: 80 },
-        { name: "touchdesigner", level: 70 }
+        { name: "touchdesigner", level: 70 },
+        { name: "premiere pro", level: 90 }
       ]
     }
   ],
@@ -284,7 +285,7 @@ export const contact = {
  */
 export const about = {
   title: "About",
-  description: "I am a Berlin-based creative technologist and visual artist pioneering the use of artificial intelligence in cinematic narrative.\n\nMy work merges deep technical R&D with a directorial eye for cinematography and composition, creating visuals that were previously impossible. I collaborate with agencies, production compannies, filmmakers and studios to architect and execute the future of visual expression.",
+  description: "I am a Berlin-based creative technologist and visual artist, pioneering the use of artificial intelligence in cinematic narrative.\n\nMy work merges deep technical R&D with a directorial eye for cinematography and composition to create visuals previously thought impossible. I collaborate with filmmakers, studios, production companies, and creative agencies to architect and execute the future of visual expression.",
   
   passions: [
     "Innovation in Film VFX - Developing AI workflows that enhance rather than replace traditional craftsmanship",
