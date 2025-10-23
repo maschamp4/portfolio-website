@@ -17,13 +17,13 @@ export const hero = {
 export const projects = [
   {
     id: "immersive-installation",
-    title: "Immersive Installation",
+    title: "Generative Worlds: The Perpetual Journey",
     client: "Danish Architecture Center",
     year: "2025",
     category: "Immersive Art Installation",
     role: "Artist",
     shortDescription: "Role: Artist",
-    description: "The Challenge: To create a non-repeating, photorealistic animated journey through a synthetic world, maintaining visual coherence and a meditative, dreamlike quality for an immersive installation.\n\nThe Approach: Trained a bespoke generative model on Danish landscapes to create an endless, algorithmically-driven animation, blurring the line between the real and the imagined.",
+    description: "The Challenge: To craft a meditative, endless visual experience that could transport the viewer. The goal was to build a world that breathes, evolving infinitely without repetition, blurring the line between a digital creation and a natural system.\n\nThe Approach: A proprietary generative model was trained to dream of the Danish landscape. The resulting algorithm produces a perpetual, hypnotic journey, creating an installation that is a living piece of digital nature.",
     video: "https://player.vimeo.com/video/1129570738?h=1768ffda44",
     images: {
       hero: "/images/AI and Hybrid campaigns_1.png",
@@ -40,13 +40,13 @@ export const projects = [
   },
   {
     id: "spec-film-porsche",
-    title: "AI Film",
+    title: "AI Cinematography: A Vehicle with Soul",
     client: "Porsche",
     year: "2025",
     category: "AI Cinematography",
     role: "AI Artist / VFX Art Director",
     shortDescription: "Role: AI Artist / VFX Art Director",
-    description: "The Challenge: To create a fully AI-generated car sequence with absolute photorealism and temporal consistency. The core difficulty was maintaining the vehicle's integrity and dynamic motion across a series of complex, generative shots.\n\nThe Approach: I engineered a proprietary workflow that layers generative AI for environments with advanced object inpainting and coherence models. This method ensures the vehicle remains perfectly consistent while allowing for dynamic, cinematic camera movement, delivering a final, polished sequence.",
+    description: "The Challenge: To give a synthetic vehicle a tangible soul. The goal was to craft a dynamic, emotionally resonant sequence where the car remained perfectly consistent while moving through a vast, dreamlike world. This demanded absolute realism and a powerful cinematic language.\n\nThe Approach: As the AI Artist, I orchestrated a multi-tool workflow to achieve the required consistency and cinematic quality. By layering several generative techniques and applying a final temporal stabilization pass, I produced a seamless and dynamic sequence that pushes the boundaries of synthetic cinematography.",
     video: "https://player.vimeo.com/video/1129571713?h=9e784ab9f0",
     images: {
       hero: "/images/AI and Hybrid campaigns_5.jpeg",
@@ -191,7 +191,7 @@ export const experience = {
  * Awards & Recognition Data
  */
 export const awards = {
-  title: "Awards & Recognition",
+  title: "Industry Recognition for Creative Excellence",
   items: [
     {
       title: "Gerety Awards",

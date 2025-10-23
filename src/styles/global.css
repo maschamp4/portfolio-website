@@ -755,7 +755,7 @@ body.no-scroll {
   width: 250px;
   height: 250px;
   object-fit: cover;
-  object-position: center center;
+  object-position: center 30%;
   border-radius: 50%;
   border: 3px solid rgba(255, 255, 255, 0.2);
   box-shadow: 0 0 30px rgba(6, 182, 212, 0.2),

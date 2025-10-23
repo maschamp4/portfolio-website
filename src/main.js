@@ -7,9 +7,13 @@
 import './styles/reset.css';
 import './styles/variables.css';
 import './styles/global.css';
+import './styles/auth.css';
 
 // Import content data
 import { content } from './data/content.js';
+
+// Import authentication
+import Auth from './components/Auth.js';
 
 // Import utility classes
 import eventBus from './utils/EventBus.js';
@@ -34,6 +38,7 @@ import { initMagneticElements, destroyMagneticElements } from './animations/Magn
  */
 const state = {
   isInitialized: false,
+  isAuthenticated: false,
   scrollY: 0,
   windowWidth: window.innerWidth,
   windowHeight: window.innerHeight,
@@ -43,6 +48,7 @@ const state = {
   threeScene: null, // Three.js morphing shape instance
   scrollAnimations: null, // Scroll animations instance
   magneticElements: [], // Magnetic effect instances
+  auth: null, // Authentication instance
 };
 
 /**
@@ -252,9 +258,9 @@ function handleResize() {
 }
 
 /**
- * Initialize application
+ * Initialize application (after authentication)
  */
-async function init() {
+async function initApp() {
   if (state.isInitialized) return;
   
   console.log('Initializing Mascha Portfolio...');
@@ -277,6 +283,32 @@ async function init() {
   
   state.isInitialized = true;
   console.log('Application initialized successfully!');
+}
+
+/**
+ * Initialize authentication and check access
+ */
+async function init() {
+  console.log('Starting authentication check...');
+  
+  // Initialize authentication
+  state.auth = new Auth();
+  const isAuthenticated = await state.auth.init();
+  state.isAuthenticated = isAuthenticated;
+  
+  if (isAuthenticated) {
+    // User is already authenticated, initialize app immediately
+    console.log('User already authenticated, initializing app...');
+    await initApp();
+  } else {
+    // Wait for authentication event
+    console.log('Waiting for user authentication...');
+    window.addEventListener('authenticated', async () => {
+      console.log('Authentication successful, initializing app...');
+      state.isAuthenticated = true;
+      await initApp();
+    });
+  }
 }
 
 /**
