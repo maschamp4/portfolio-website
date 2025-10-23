@@ -192,7 +192,8 @@ export const experience = {
         { name: "after effects", level: 95 },
         { name: "unreal engine", level: 80 },
         { name: "touchdesigner", level: 70 },
-        { name: "premiere pro", level: 90 }
+        { name: "premiere pro", level: 90 },
+        { name: "blender", level: 85 }
       ]
     }
   ],

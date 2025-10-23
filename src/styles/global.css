@@ -511,8 +511,6 @@ body.no-scroll {
   text-align: left;
   white-space: nowrap;
   overflow: visible;
-  opacity: 0;
-  transform: translateY(80px);
 }
 
 /* Letter span styling for magnetic cursor interaction */
@@ -533,8 +531,6 @@ body.no-scroll {
   letter-spacing: 0.1em;
   text-transform: uppercase;
   line-height: 1.4;
-  opacity: 0;
-  transform: translateY(20px);
 }
 
 /* Scroll Indicator Button - Enhanced Visibility */
