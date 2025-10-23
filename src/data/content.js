@@ -88,7 +88,7 @@ export const projects = [
     id: "ai-hybrid-campaigns",
     title: "Numerous AI and Hybrid Campaigns",
     client: "Porsche, VW, Burger King, MAN and others",
-    year: "2023-2024",
+    year: "2023-2025",
     category: "Multiple Campaigns",
     role: "AI Director / Creative Technologist",
     shortDescription: "Role: AI Director / Creative Technologist",
@@ -131,7 +131,7 @@ export const experience = {
     {
       year: "Feb 2023 - Present",
       title: "AI Artist & Creative Technologist",
-      company: "G&P",
+      company: "Grabarz & Partner",
       type: "Full-time",
       description: "",
       highlights: []
@@ -151,6 +151,28 @@ export const experience = {
       type: "Full-time",
       description: "",
       highlights: []
+    }
+  ],
+  craft: [
+    {
+      title: "Generative Concept & Creation",
+      description: "From the initial spark of an idea to a fully realized synthetic world, I create the unseeable."
+    },
+    {
+      title: "Cinematic Direction & Motion",
+      description: "I direct the camera and choreograph movement to tell a compelling story and evoke emotion."
+    },
+    {
+      title: "Visual Art Direction",
+      description: "I establish the complete visual language of a project, from color and composition to mood and tone."
+    },
+    {
+      title: "Seamless Integration & Photorealism",
+      description: "Using advanced inpainting and temporal coherence, I ensure every element feels tangible and real."
+    },
+    {
+      title: "High-Fidelity Finishing",
+      description: "I employ cutting-edge upscaling techniques to polish every frame to a pristine, cinematic standard."
     }
   ],
   skills: [
@@ -191,7 +213,7 @@ export const experience = {
  * Awards & Recognition Data
  */
 export const awards = {
-  title: "Industry Recognition for Creative Excellence",
+  title: "Awards & Recognition",
   items: [
     {
       title: "Gerety Awards",
@@ -258,7 +280,7 @@ export const contact = {
  */
 export const about = {
   title: "About",
-  description: "I am a Berlin-based director and visual artist pioneering the use of artificial intelligence in cinematic narrative.\n\nMy work merges deep technical R&D with a directorial eye for cinematography and composition, creating visuals that were previously impossible. I collaborate with filmmakers and studios to architect and execute the future of visual expression.",
+  description: "I am a Berlin-based creative technologist and visual artist pioneering the use of artificial intelligence in cinematic narrative.\n\nMy work merges deep technical R&D with a directorial eye for cinematography and composition, creating visuals that were previously impossible. I collaborate with agencies, production compannies, filmmakers and studios to architect and execute the future of visual expression.",
   
   passions: [
     "Innovation in Film VFX - Developing AI workflows that enhance rather than replace traditional craftsmanship",

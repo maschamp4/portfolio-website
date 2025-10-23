@@ -47,10 +47,10 @@ class Auth {
             <p class="auth-label">Enter Access Code</p>
             
             <div class="auth-code-inputs">
-              <input type="text" maxlength="1" class="auth-code-box" data-index="0" autocomplete="off" inputmode="numeric" pattern="[0-9]*" />
-              <input type="text" maxlength="1" class="auth-code-box" data-index="1" autocomplete="off" inputmode="numeric" pattern="[0-9]*" />
-              <input type="text" maxlength="1" class="auth-code-box" data-index="2" autocomplete="off" inputmode="numeric" pattern="[0-9]*" />
-              <input type="text" maxlength="1" class="auth-code-box" data-index="3" autocomplete="off" inputmode="numeric" pattern="[0-9]*" />
+              <input type="password" maxlength="1" class="auth-code-box" data-index="0" autocomplete="off" inputmode="numeric" pattern="[0-9]*" />
+              <input type="password" maxlength="1" class="auth-code-box" data-index="1" autocomplete="off" inputmode="numeric" pattern="[0-9]*" />
+              <input type="password" maxlength="1" class="auth-code-box" data-index="2" autocomplete="off" inputmode="numeric" pattern="[0-9]*" />
+              <input type="password" maxlength="1" class="auth-code-box" data-index="3" autocomplete="off" inputmode="numeric" pattern="[0-9]*" />
             </div>
             
             <div id="auth-error" class="auth-error" role="alert"></div>

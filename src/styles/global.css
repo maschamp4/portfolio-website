@@ -626,6 +626,12 @@ body.no-scroll {
   flex-wrap: wrap;
 }
 
+/* Hide CTA buttons initially - GSAP will animate them in */
+.hero__cta .btn {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
 /* Mobile & Tablet Optimizations */
 @media (max-width: 1024px) {
   .hero {
@@ -1445,6 +1451,234 @@ body.no-scroll {
   
   .timeline-item--right .timeline-item__content {
     padding-left: calc(var(--element-gap) + 10px);
+  }
+}
+
+/* ==========================================================================
+   Craft Section - Animated Cards
+   ========================================================================== */
+
+.experience__craft {
+  max-width: 1200px;
+  margin: 0 auto var(--content-gap) auto;
+  padding: calc(var(--content-gap) * 1.5) 0;
+}
+
+.craft__title {
+  font-size: var(--h2);
+  font-family: 'Fatal Trial', sans-serif;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: calc(var(--content-gap) * 1.5);
+  color: var(--text-primary);
+  position: relative;
+}
+
+.craft__title::after {
+  content: '';
+  position: absolute;
+  bottom: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--accent-primary), transparent);
+  box-shadow: 0 0 20px rgba(6, 182, 212, 0.6);
+}
+
+.craft__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: var(--element-gap);
+  perspective: 1000px;
+}
+
+.craft-card {
+  position: relative;
+  background: rgba(20, 20, 30, 0.6);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(6, 182, 212, 0.2);
+  border-radius: var(--radius-md);
+  padding: calc(var(--element-gap) * 1.2);
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+  transform-style: preserve-3d;
+}
+
+/* Animated glow effect */
+.craft-card__glow {
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(
+    circle,
+    rgba(6, 182, 212, 0.15) 0%,
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  pointer-events: none;
+}
+
+.craft-card:hover .craft-card__glow {
+  opacity: 1;
+  animation: glowPulse 3s ease-in-out infinite;
+}
+
+@keyframes glowPulse {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.3;
+  }
+  50% {
+    transform: translate(10%, 10%) scale(1.1);
+    opacity: 0.6;
+  }
+}
+
+/* Holographic border effect */
+.craft-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: var(--radius-md);
+  padding: 1px;
+  background: linear-gradient(
+    135deg,
+    rgba(6, 182, 212, 0.4),
+    rgba(59, 130, 246, 0.4),
+    rgba(147, 51, 234, 0.4),
+    rgba(6, 182, 212, 0.4)
+  );
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  background-size: 300% 300%;
+  animation: gradientShift 6s ease infinite;
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.craft-card:hover::before {
+  opacity: 1;
+}
+
+.craft-card:hover {
+  background: rgba(20, 20, 30, 0.85);
+  border-color: rgba(6, 182, 212, 0.5);
+  transform: translateY(-12px) rotateX(5deg);
+  box-shadow:
+    0 25px 70px rgba(6, 182, 212, 0.25),
+    0 10px 30px rgba(6, 182, 212, 0.15),
+    0 0 40px rgba(6, 182, 212, 0.1);
+}
+
+.craft-card__number {
+  font-size: 3rem;
+  font-family: 'View-Black-Roman-FTP', sans-serif;
+  font-weight: 900;
+  color: rgba(6, 182, 212, 0.2);
+  line-height: 1;
+  margin-bottom: var(--space-4);
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  text-shadow: 0 0 20px rgba(6, 182, 212, 0.3);
+}
+
+.craft-card:hover .craft-card__number {
+  color: rgba(6, 182, 212, 0.4);
+  text-shadow: 0 0 30px rgba(6, 182, 212, 0.6);
+  transform: scale(1.1);
+}
+
+.craft-card__title {
+  font-size: var(--h4);
+  font-family: 'Fatal Trial', sans-serif;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: var(--space-4);
+  line-height: 1.3;
+  transition: color 0.3s ease;
+}
+
+.craft-card:hover .craft-card__title {
+  color: var(--accent-primary);
+}
+
+.craft-card__description {
+  font-size: var(--body-small);
+  font-family: 'Broadleaf', sans-serif;
+  font-weight: 400;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  transition: color 0.3s ease;
+}
+
+.craft-card:hover .craft-card__description {
+  color: var(--text-primary);
+}
+
+/* Responsive adjustments for craft section */
+@media (max-width: 1023px) {
+  .craft__grid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: calc(var(--element-gap) * 0.75);
+  }
+}
+
+@media (max-width: 767px) {
+  .experience__craft {
+    padding: var(--content-gap) 0;
+  }
+
+  .craft__grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+
+  .craft-card {
+    padding: var(--element-gap);
+  }
+
+  .craft-card:hover {
+    transform: translateY(-8px);
+  }
+
+  .craft-card__number {
+    font-size: 2.5rem;
+  }
+}
+
+/* Disable 3D transforms on mobile for performance */
+@media (max-width: 767px) {
+  .craft__grid {
+    perspective: none;
+  }
+
+  .craft-card {
+    transform-style: flat;
+  }
+
+  .craft-card:hover {
+    transform: translateY(-8px) rotateX(0deg);
   }
 }
 

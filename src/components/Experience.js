@@ -50,6 +50,7 @@ class Experience {
 
     this.updateSectionTitle();
     this.renderTimeline();
+    this.renderCraft();
     this.renderSkills();
     this.setupScrollAnimations();
     this.setupProgressLine();
@@ -166,6 +167,70 @@ class Experience {
   }
 
   /**
+   * Render craft section from content data
+   */
+  renderCraft() {
+    const craftContainer = this.element.querySelector('.experience__craft');
+    
+    if (!craftContainer) {
+      console.warn('Experience: Craft container not found');
+      return;
+    }
+
+    if (!this.experienceData.craft || this.experienceData.craft.length === 0) {
+      console.warn('Experience: No craft data found');
+      return;
+    }
+
+    // Clear existing content
+    craftContainer.innerHTML = '';
+
+    // Create craft title
+    const craftTitle = document.createElement('h3');
+    craftTitle.className = 'craft__title';
+    craftTitle.textContent = 'My Craft';
+    craftContainer.appendChild(craftTitle);
+
+    // Create craft grid
+    const craftGrid = document.createElement('div');
+    craftGrid.className = 'craft__grid';
+
+    // Render each craft item
+    this.experienceData.craft.forEach((item, index) => {
+      const craftCard = this.createCraftCard(item, index);
+      craftGrid.appendChild(craftCard);
+    });
+
+    craftContainer.appendChild(craftGrid);
+
+    // Store craft card references
+    this.craftCards = Array.from(craftContainer.querySelectorAll('.craft-card'));
+
+    console.log(`Experience: Rendered ${this.craftCards.length} craft cards`);
+  }
+
+  /**
+   * Create craft card element
+   * @param {Object} item - Craft item data
+   * @param {number} index - Card index
+   * @returns {HTMLElement} Craft card element
+   */
+  createCraftCard(item, index) {
+    const card = document.createElement('div');
+    card.className = 'craft-card';
+    card.setAttribute('data-index', index);
+
+    card.innerHTML = `
+      <div class="craft-card__number">${String(index + 1).padStart(2, '0')}</div>
+      <h4 class="craft-card__title">${item.title}</h4>
+      <p class="craft-card__description">${item.description}</p>
+      <div class="craft-card__glow"></div>
+    `;
+
+    return card;
+  }
+
+  /**
    * Render skills grid from content data
    */
   renderSkills() {
@@ -250,7 +315,41 @@ class Experience {
       this.timelineEntries.forEach(entry => {
         gsap.set(entry, { opacity: 1, x: 0 });
       });
+      if (this.craftCards) {
+        this.craftCards.forEach(card => {
+          gsap.set(card, { opacity: 1, y: 0, scale: 1 });
+        });
+      }
       return;
+    }
+
+    // Animate craft cards with stagger
+    if (this.craftCards) {
+      this.craftCards.forEach((card, index) => {
+        gsap.set(card, {
+          opacity: 0,
+          y: 60,
+          scale: 0.9,
+          rotateX: -15
+        });
+
+        const trigger = gsap.to(card, {
+          scrollTrigger: {
+            trigger: card,
+            start: 'top 85%',
+            toggleActions: 'play none none reverse',
+          },
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          rotateX: 0,
+          duration: 1,
+          delay: index * 0.15,
+          ease: 'power3.out',
+        });
+
+        this.scrollTriggers.push(trigger.scrollTrigger);
+      });
     }
 
     // Set initial states and animate items
@@ -477,6 +576,7 @@ class Experience {
     this.scrollTriggers = [];
 
     this.renderTimeline();
+    this.renderCraft();
     this.renderSkills();
     this.setupScrollAnimations();
     this.setupProgressLine();
@@ -513,13 +613,23 @@ class Experience {
       if (marker) gsap.set(marker, { clearProps: 'all' });
     });
 
+    // Reset craft cards
+    if (this.craftCards) {
+      this.craftCards.forEach(card => {
+        gsap.set(card, { clearProps: 'all' });
+      });
+    }
+
     // Reset skill pills
-    this.skillPills.forEach(pill => {
-      gsap.set(pill, { clearProps: 'all' });
-    });
+    if (this.skillPills) {
+      this.skillPills.forEach(pill => {
+        gsap.set(pill, { clearProps: 'all' });
+      });
+    }
 
     // Clear references
     this.timelineEntries = [];
+    this.craftCards = [];
     this.skillPills = [];
 
     console.log('Experience: Destroyed');

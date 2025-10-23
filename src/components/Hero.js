@@ -128,9 +128,9 @@ class Hero {
     const anim = gsap.from(this.tagline, {
       opacity: 0,
       y: 30,
-      duration: 1.2,
-      delay: 0.3,
-      ease: 'power3.out',
+      duration: 1,
+      delay: 0.2,
+      ease: 'power2.out',
     });
     
     this.animations.push(anim);
@@ -153,11 +153,11 @@ class Hero {
 
     const anim = gsap.from(this.titleLines, {
       opacity: 0,
-      y: 100,
-      stagger: 0.2,
-      duration: 1.2,
-      delay: 0.6,
-      ease: 'power3.out',
+      y: 80,
+      stagger: 0.15,
+      duration: 1,
+      delay: 0.4,
+      ease: 'power2.out',
       onComplete: () => {
         this.isAnimated = true;
         eventBus.emit('hero:animated');
@@ -184,7 +184,7 @@ class Hero {
       opacity: 0,
       y: 20,
       duration: 0.8,
-      delay: 1.2,
+      delay: 1,
       ease: 'power2.out',
     });
     
@@ -208,8 +208,8 @@ class Hero {
       opacity: 0,
       y: 20,
       stagger: 0.1,
-      duration: 0.6,
-      delay: 1.5,
+      duration: 0.8,
+      delay: 1.3,
       ease: 'power2.out',
     });
     
@@ -237,8 +237,8 @@ class Hero {
       duration: 1.5,
       repeat: -1,
       yoyo: true,
-      ease: 'power2.inOut',
-      delay: 2,
+      ease: 'sine.inOut',
+      delay: 1.8,
     });
     
     this.animations.push(anim);
