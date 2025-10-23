@@ -248,10 +248,10 @@
   --radius-full: 9999px;
   
   /* ==========================================================================
-     Animation & Motion
+     Animation & Motion - Optimized for Smoothness
      ========================================================================== */
   
-  /* Easing Functions */
+  /* Easing Functions - Using power3 curve for maximum smoothness */
   --ease-in-quad: cubic-bezier(0.55, 0.085, 0.68, 0.53);
   --ease-out-quad: cubic-bezier(0.25, 0.46, 0.45, 0.94);
   --ease-in-out-quad: cubic-bezier(0.455, 0.03, 0.515, 0.955);
@@ -259,15 +259,15 @@
   --ease-out-cubic: cubic-bezier(0.215, 0.61, 0.355, 1);
   --ease-in-out-cubic: cubic-bezier(0.645, 0.045, 0.355, 1);
   --ease-elastic: cubic-bezier(0.68, -0.55, 0.265, 1.55);
-  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-smooth: cubic-bezier(0.33, 1, 0.68, 1);
   
-  /* Duration Scale */
+  /* Duration Scale - Slightly extended for luxurious feel */
   --duration-instant: 0ms;
-  --duration-fast: 150ms;
-  --duration-normal: 300ms;
-  --duration-slow: 500ms;
-  --duration-slower: 800ms;
-  --duration-slowest: 1200ms;
+  --duration-fast: 200ms;
+  --duration-normal: 400ms;
+  --duration-slow: 600ms;
+  --duration-slower: 900ms;
+  --duration-slowest: 1400ms;
   
   /* ==========================================================================
      Layout & Container Widths
@@ -279,13 +279,13 @@
   --container-full: 100%;
   
   /* ==========================================================================
-     Transitions - Design System
+     Transitions - Design System - Optimized for Premium Feel
      ========================================================================== */
   
-  --transition-fast: 300ms;
-  --transition-base: 400ms;
-  --transition-slow: 800ms;
-  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-fast: 400ms;
+  --transition-base: 500ms;
+  --transition-slow: 900ms;
+  --ease-smooth: cubic-bezier(0.33, 1, 0.68, 1);
   
   /* ==========================================================================
      Miscellaneous

@@ -19,11 +19,11 @@ class ScrollAnimations {
     
     // Animation settings
     this.settings = {
-      // Lenis configuration
+      // Lenis configuration - Optimized for buttery smooth scrolling
       lenis: {
-        smooth: 1.2,
-        lerp: 0.08,
-        duration: 1.2,
+        smooth: 1.5,
+        lerp: 0.1,
+        duration: 1.5,
         easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
         orientation: 'vertical',
         gestureOrientation: 'vertical',
@@ -34,21 +34,21 @@ class ScrollAnimations {
         infinite: false,
       },
       
-      // Animation timings - adjusted for progressive reveal
+      // Animation timings - Optimized for smooth, luxurious feel
       timings: {
-        fadeInDuration: 1.2,
-        staggerDelay: 0.15,
-        textStaggerDelay: 0.08,
-        parallaxScrub: 1.5,
-        revealDuration: 1.5,
+        fadeInDuration: 1.4,
+        staggerDelay: 0.12,
+        textStaggerDelay: 0.1,
+        parallaxScrub: 2,
+        revealDuration: 1.6,
       },
       
-      // Easing functions
+      // Easing functions - All using power3 for maximum smoothness
       easing: {
-        default: 'power2.out',
+        default: 'power3.out',
         smooth: 'power3.out',
-        elastic: 'elastic.out(1, 0.5)',
-        spring: 'back.out(1.5)',
+        elastic: 'elastic.out(1, 0.4)',
+        spring: 'back.out(1.2)',
       },
     };
   }
@@ -258,12 +258,12 @@ class ScrollAnimations {
         scrollTrigger: {
           trigger: hero,
           start: 'top top',
-          end: '50% top', // Faster end point
-          scrub: 0.5, // Much faster scrub for immediate response
+          end: '60% top',
+          scrub: 1,
         },
         y: -150,
         opacity: 0,
-        ease: 'power3.out', // Smoother easing
+        ease: 'power3.out',
       });
       this.scrollTriggers.push(trigger);
     }
@@ -273,8 +273,8 @@ class ScrollAnimations {
         scrollTrigger: {
           trigger: hero,
           start: 'top top',
-          end: '50% top',
-          scrub: 0.5,
+          end: '60% top',
+          scrub: 1,
         },
         y: -100,
         opacity: 0,
@@ -283,14 +283,14 @@ class ScrollAnimations {
       this.scrollTriggers.push(trigger);
     }
 
-    // Subheadline - disappears FIRST (faster animation)
+    // Subheadline - smooth fade
     if (subheadline) {
       const trigger = gsap.to(subheadline, {
         scrollTrigger: {
           trigger: hero,
           start: 'top top',
-          end: '30% top', // Earlier end point - disappears faster
-          scrub: 0.3, // Faster scrub for more immediate response
+          end: '50% top',
+          scrub: 1,
         },
         y: -120,
         opacity: 0,
@@ -304,8 +304,8 @@ class ScrollAnimations {
         scrollTrigger: {
           trigger: hero,
           start: 'top top',
-          end: '50% top',
-          scrub: 0.5,
+          end: '60% top',
+          scrub: 1,
         },
         y: -100,
         opacity: 0,
@@ -319,8 +319,8 @@ class ScrollAnimations {
         scrollTrigger: {
           trigger: hero,
           start: 'top top',
-          end: '50% top',
-          scrub: 0.5,
+          end: '60% top',
+          scrub: 1,
         },
         y: -80,
         opacity: 0,
@@ -335,12 +335,12 @@ class ScrollAnimations {
         scrollTrigger: {
           trigger: hero,
           start: 'top top',
-          end: '20% top',
-          scrub: 0.3,
+          end: '30% top',
+          scrub: 0.8,
         },
         opacity: 0,
         y: -30,
-        ease: 'power2.out',
+        ease: 'power3.out',
       });
       this.scrollTriggers.push(trigger);
     }
@@ -360,8 +360,8 @@ class ScrollAnimations {
         scrollTrigger: {
           trigger: section,
           start: 'top 85%',
-          end: 'top 50%',
-          scrub: 1,
+          end: 'top 55%',
+          scrub: 1.5,
           toggleActions: 'play none none reverse',
         },
         opacity: 1,
@@ -453,8 +453,8 @@ class ScrollAnimations {
         },
         opacity: 1,
         x: 0,
-        duration: 0.8,
-        delay: index * 0.15,
+        duration: 1.2,
+        delay: index * 0.12,
         ease: this.settings.easing.default,
       });
       this.scrollTriggers.push(trigger);
@@ -502,9 +502,9 @@ class ScrollAnimations {
         opacity: 1,
         y: 0,
         scale: 1,
-        duration: 0.8,
-        delay: index * 0.08,
-        ease: this.settings.easing.spring,
+        duration: 1,
+        delay: index * 0.1,
+        ease: this.settings.easing.smooth,
       });
       this.scrollTriggers.push(trigger);
     });
@@ -528,8 +528,8 @@ class ScrollAnimations {
         },
         opacity: 1,
         x: 0,
-        duration: 0.8,
-        delay: index * 0.15,
+        duration: 1,
+        delay: index * 0.12,
         ease: this.settings.easing.default,
       });
       this.scrollTriggers.push(trigger);

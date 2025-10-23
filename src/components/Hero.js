@@ -120,9 +120,9 @@ class Hero {
     const anim = gsap.from(this.tagline, {
       opacity: 0,
       y: 30,
-      duration: 1,
-      delay: 0.2,
-      ease: 'power2.out',
+      duration: 1.2,
+      delay: 0.3,
+      ease: 'power3.out',
     });
     
     this.animations.push(anim);
@@ -146,10 +146,10 @@ class Hero {
     const anim = gsap.from(this.titleLines, {
       opacity: 0,
       y: 80,
-      stagger: 0.15,
-      duration: 1,
-      delay: 0.4,
-      ease: 'power2.out',
+      stagger: 0.12,
+      duration: 1.4,
+      delay: 0.5,
+      ease: 'power3.out',
       onComplete: () => {
         this.isAnimated = true;
         eventBus.emit('hero:animated');
@@ -175,9 +175,9 @@ class Hero {
     const anim = gsap.from(this.subtitle, {
       opacity: 0,
       y: 20,
-      duration: 0.8,
-      delay: 1,
-      ease: 'power2.out',
+      duration: 1,
+      delay: 1.3,
+      ease: 'power3.out',
     });
     
     this.animations.push(anim);
@@ -201,11 +201,11 @@ class Hero {
     // Bounce animation with GSAP
     const anim = gsap.to(this.scrollIndicator, {
       y: 10,
-      duration: 1.5,
+      duration: 2,
       repeat: -1,
       yoyo: true,
       ease: 'sine.inOut',
-      delay: 1.8,
+      delay: 2.2,
     });
     
     this.animations.push(anim);
