@@ -8,7 +8,7 @@
  */
 export const hero = {
   title: ["VISUAL", "ARTIST", "CREATIVE", "TECHNOLO", "GIST"],
-  subtitle: ""
+  subtitle: "WITH A FEELING FOR STYLE AND CINEMATIC AESTHETIC"
 };
 
 /**
