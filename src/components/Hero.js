@@ -293,77 +293,11 @@ class Hero {
   }
 
   /**
-   * Set up modern magnetic cursor interaction
-   * Letters repel from cursor with spring physics
+   * Set up cursor interaction (disabled - magnetic effect removed)
    */
   setupCursorInteraction() {
-    if (!this.title || this.titleLines.length === 0) return;
-    if (this.prefersReducedMotion || this.isMobileOrTablet) return; // Disable on mobile/tablet
-
-    // Store original text for each line
-    this.originalText = this.titleLines.map(line => line.textContent);
-
-    // Split text into individual letters
-    this.titleLines.forEach((line, lineIndex) => {
-      const text = this.originalText[lineIndex];
-      line.innerHTML = text.split('').map(char =>
-        char === ' ' ? '&nbsp;' : `<span class="hero__title-letter">${char}</span>`
-      ).join('');
-    });
-
-    // Get all letter elements
-    const letters = document.querySelectorAll('.hero__title-letter');
-    
-    // Magnetic repulsion effect on mouse move
-    const handleMouseMove = (e) => {
-      letters.forEach(letter => {
-        const rect = letter.getBoundingClientRect();
-        const centerX = rect.left + rect.width / 2;
-        const centerY = rect.top + rect.height / 2;
-        
-        // Calculate distance from cursor
-        const deltaX = e.clientX - centerX;
-        const deltaY = e.clientY - centerY;
-        const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
-        
-        // Magnetic effect radius (250px - larger for smoother transitions)
-        const maxDistance = 250;
-        
-        if (distance < maxDistance) {
-          // Calculate repulsion strength (inverse of distance)
-          const strength = (maxDistance - distance) / maxDistance;
-          // Apply repulsion in opposite direction from cursor (reduced to 0.08 for minimal sensitivity)
-          const moveX = -deltaX * strength * 0.08;
-          const moveY = -deltaY * strength * 0.08;
-          
-          // Add smooth transition with longer duration
-          letter.style.transition = 'transform 0.2s cubic-bezier(0.25, 0.1, 0.25, 1)';
-          letter.style.transform = `translate(${moveX}px, ${moveY}px)`;
-        } else {
-          // Reset to original position
-          letter.style.transform = 'translate(0, 0)';
-        }
-      });
-    };
-
-    // Reset all letters on mouse leave
-    const handleMouseLeave = () => {
-      letters.forEach(letter => {
-        letter.style.transform = 'translate(0, 0)';
-      });
-    };
-
-    // Attach event listeners to document for smooth tracking
-    document.addEventListener('mousemove', handleMouseMove);
-    this.title.addEventListener('mouseleave', handleMouseLeave);
-
-    // Store references for cleanup
-    this.magneticHandlers = {
-      mousemove: handleMouseMove,
-      mouseleave: handleMouseLeave
-    };
-
-    console.log('Hero: Magnetic cursor interaction setup complete');
+    // Magnetic effect has been removed for better user experience
+    console.log('Hero: Cursor interaction disabled');
   }
 
   /**
