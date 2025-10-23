@@ -289,26 +289,28 @@ async function initApp() {
  * Initialize authentication and check access
  */
 async function init() {
-  console.log('Starting authentication check...');
+  console.log('Starting application (authentication disabled)...');
   
-  // Initialize authentication
-  state.auth = new Auth();
-  const isAuthenticated = await state.auth.init();
-  state.isAuthenticated = isAuthenticated;
+  // Authentication disabled - initialize app directly
+  state.isAuthenticated = true;
+  await initApp();
   
-  if (isAuthenticated) {
-    // User is already authenticated, initialize app immediately
-    console.log('User already authenticated, initializing app...');
-    await initApp();
-  } else {
-    // Wait for authentication event
-    console.log('Waiting for user authentication...');
-    window.addEventListener('authenticated', async () => {
-      console.log('Authentication successful, initializing app...');
-      state.isAuthenticated = true;
-      await initApp();
-    });
-  }
+  // Keep auth code for potential future use
+  // state.auth = new Auth();
+  // const isAuthenticated = await state.auth.init();
+  // state.isAuthenticated = isAuthenticated;
+  //
+  // if (isAuthenticated) {
+  //   console.log('User already authenticated, initializing app...');
+  //   await initApp();
+  // } else {
+  //   console.log('Waiting for user authentication...');
+  //   window.addEventListener('authenticated', async () => {
+  //     console.log('Authentication successful, initializing app...');
+  //     state.isAuthenticated = true;
+  //     await initApp();
+  //   });
+  // }
 }
 
 /**
