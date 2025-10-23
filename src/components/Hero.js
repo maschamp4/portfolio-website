@@ -326,18 +326,18 @@ class Hero {
         const deltaY = e.clientY - centerY;
         const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
         
-        // Magnetic effect radius (200px - larger for smoother transitions)
-        const maxDistance = 200;
+        // Magnetic effect radius (250px - larger for smoother transitions)
+        const maxDistance = 250;
         
         if (distance < maxDistance) {
           // Calculate repulsion strength (inverse of distance)
           const strength = (maxDistance - distance) / maxDistance;
-          // Apply repulsion in opposite direction from cursor (reduced to 0.15 for less sensitivity)
-          const moveX = -deltaX * strength * 0.15;
-          const moveY = -deltaY * strength * 0.15;
+          // Apply repulsion in opposite direction from cursor (reduced to 0.08 for minimal sensitivity)
+          const moveX = -deltaX * strength * 0.08;
+          const moveY = -deltaY * strength * 0.08;
           
-          // Add smooth transition
-          letter.style.transition = 'transform 0.1s ease-out';
+          // Add smooth transition with longer duration
+          letter.style.transition = 'transform 0.2s cubic-bezier(0.25, 0.1, 0.25, 1)';
           letter.style.transform = `translate(${moveX}px, ${moveY}px)`;
         } else {
           // Reset to original position
