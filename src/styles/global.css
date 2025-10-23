@@ -608,20 +608,6 @@ body.no-scroll {
 }
 
 
-.hero__cta {
-  display: flex;
-  gap: var(--element-gap);
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
-}
-
-/* Hide CTA buttons initially - GSAP will animate them in */
-.hero__cta .btn {
-  opacity: 0;
-  transform: translateY(20px);
-}
-
 /* Mobile & Tablet Optimizations */
 @media (max-width: 1024px) {
   .hero {
@@ -648,10 +634,6 @@ body.no-scroll {
     margin-top: 1rem;
   }
 
-  .hero__cta {
-    justify-content: flex-start;
-    margin-top: 2rem;
-  }
 }
 
 @media (max-width: 767px) {
@@ -673,17 +655,6 @@ body.no-scroll {
     font-size: 0.7rem;
   }
 
-  .hero__cta {
-    flex-direction: column;
-    width: 100%;
-    gap: var(--space-4);
-  }
-
-  .btn {
-    width: 100%;
-    padding: var(--space-4) var(--space-6);
-    font-size: 0.9rem;
-  }
 }
 
 /* ==========================================================================

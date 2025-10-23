@@ -22,7 +22,6 @@ class Hero {
     this.title = this.element.querySelector('.hero__title');
     this.titleLines = Array.from(this.element.querySelectorAll('.hero__title-line'));
     this.subtitle = this.element.querySelector('.hero__subtitle');
-    this.ctaButtons = Array.from(this.element.querySelectorAll('.hero__cta .btn'));
     this.scrollIndicator = this.element.querySelector('.hero__scroll-indicator') ||
                            this.element.querySelector('.scroll-indicator');
     
@@ -44,7 +43,6 @@ class Hero {
     this.updateContent();
     this.setupTextAnimations();
     this.setupScrollIndicator();
-    this.setupCTAButtons();
     this.setupParallaxEffect();
     this.setupCursorInteraction();
 
@@ -85,7 +83,6 @@ class Hero {
       if (this.tagline) gsap.set(this.tagline, { opacity: 1, y: 0 });
       if (this.titleLines.length > 0) gsap.set(this.titleLines, { opacity: 1, y: 0 });
       if (this.subtitle) gsap.set(this.subtitle, { opacity: 1, y: 0 });
-      if (this.ctaButtons.length > 0) gsap.set(this.ctaButtons, { opacity: 1, y: 0 });
       this.isAnimated = true;
       eventBus.emit('hero:animated');
       return;
@@ -104,11 +101,6 @@ class Hero {
     // Animate subtitle
     if (this.subtitle) {
       this.animateSubtitle();
-    }
-
-    // Animate CTA buttons
-    if (this.ctaButtons.length > 0) {
-      this.animateCTAButtons();
     }
   }
 
@@ -192,31 +184,6 @@ class Hero {
   }
 
   /**
-   * Animate CTA buttons
-   * Uses GSAP for smooth fade-in animation with stagger
-   */
-  animateCTAButtons() {
-    if (this.ctaButtons.length === 0) return;
-
-    if (this.prefersReducedMotion) {
-      // Simple instant display for reduced motion
-      gsap.set(this.ctaButtons, { opacity: 1, y: 0 });
-      return;
-    }
-
-    const anim = gsap.from(this.ctaButtons, {
-      opacity: 0,
-      y: 20,
-      stagger: 0.1,
-      duration: 0.8,
-      delay: 1.3,
-      ease: 'power2.out',
-    });
-    
-    this.animations.push(anim);
-  }
-
-  /**
    * Set up scroll indicator behavior and animation
    */
   setupScrollIndicator() {
@@ -269,42 +236,6 @@ class Hero {
         behavior: 'smooth'
       });
     }
-  }
-
-  /**
-   * Set up CTA button interactions
-   */
-  setupCTAButtons() {
-    this.ctaButtons.forEach(button => {
-      // Click tracking
-      button.addEventListener('click', (e) => {
-        const href = button.getAttribute('href');
-        
-        // If it's an anchor link, handle smooth scroll
-        if (href && href.startsWith('#')) {
-          e.preventDefault();
-          const target = document.querySelector(href);
-          
-          if (target) {
-            const offset = 80;
-            const elementPosition = target.getBoundingClientRect().top + window.scrollY;
-            const offsetPosition = elementPosition - offset;
-
-            window.scrollTo({
-              top: offsetPosition,
-              behavior: 'smooth'
-            });
-          }
-        }
-        
-        eventBus.emit('hero:cta-clicked', {
-          href,
-          text: button.textContent.trim()
-        });
-        
-        console.log('Hero: CTA button clicked', href);
-      });
-    });
   }
 
   /**
@@ -451,10 +382,6 @@ class Hero {
       gsap.set(this.subtitle, { opacity: 0, y: 20 });
     }
 
-    this.ctaButtons.forEach(button => {
-      gsap.set(button, { opacity: 0, y: 20 });
-    });
-
     console.log('Hero: Animations reset');
   }
 
@@ -465,7 +392,6 @@ class Hero {
     this.animateTagline();
     this.animateTitleLines();
     this.animateSubtitle();
-    this.animateCTAButtons();
   }
 
   /**
@@ -497,7 +423,6 @@ class Hero {
     if (this.scrollIndicator) gsap.set(this.scrollIndicator, { clearProps: 'all' });
     
     this.titleLines.forEach(line => gsap.set(line, { clearProps: 'all' }));
-    this.ctaButtons.forEach(button => gsap.set(button, { clearProps: 'all' }));
 
     console.log('Hero: Destroyed');
   }
